@@ -106,7 +106,7 @@ const projectShibuya: SubstrateProject<WasmDatasource> = {
             },
             assets: new Map([["lotto_v2", {file: "./metadata_shibuya/lotto_contract_v2.json"}]]),
             mapping: {
-                file: "./dist/indexShibuya.js",
+                file: "./dist/index.js",
                 handlers: [
                     {
                         handler: "handleRaffleStarted",
