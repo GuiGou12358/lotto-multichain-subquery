@@ -5,8 +5,8 @@ import {WasmDatasource} from "@subql/substrate-wasm-processor";
 // Can expand the Datasource processor types via the generic param
 const projectAstar: SubstrateProject<WasmDatasource> = {
     specVersion: "1.0.0",
-    version: "2.0.0",
-    name: "lotto-subql",
+    version: "3.0.0",
+    name: "lotto-subql-astar",
     description:
         "This SubQuery project indexes data used by the Lotto dApp on Astar network",
     runner: {
