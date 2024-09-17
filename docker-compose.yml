@@ -1,5 +1,3 @@
-version: "3"
-
 services:
   postgres:
     build:
@@ -17,8 +15,10 @@ services:
       timeout: 5s
       retries: 5
 
-  subquery-node:
+  subquery-node-shibuya:
     image: subquerynetwork/subql-node-substrate:latest
+    ports:
+      - 3001:3001
     depends_on:
       "postgres":
         condition: service_healthy
@@ -32,14 +32,43 @@ services:
     volumes:
       - ./:/app
     command:
-      - ${SUB_COMMAND:-} # set SUB_COMMAND env variable to "test" to run tests
-      - -f=/app
-      - --db-schema=app
-      - --workers=4
-      - --batch-size=30
-      - --unfinalized-blocks=true
+      - -f=/app/project-shibuya.yaml
+      - --multi-chain
+      - --db-schema=lotto-multi-chain
+      - --disable-historical
+      - --skipTransactions
+      - --port=3001
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://subquery-node:3000/ready"]
+      test: ["CMD", "curl", "-f", "http://localhost:3001/ready"]
+      interval: 3s
+      timeout: 5s
+      retries: 10
+
+  subquery-node-minato:
+    image: subquerynetwork/subql-node-ethereum:latest
+    ports:
+      - 3002:3002
+    depends_on:
+      "postgres":
+        condition: service_healthy
+    restart: unless-stopped
+    environment:
+      DB_USER: postgres
+      DB_PASS: postgres
+      DB_DATABASE: postgres
+      DB_HOST: postgres
+      DB_PORT: 5432
+    volumes:
+      - ./:/app
+    command:
+      - -f=/app/project-minato.yaml
+      - --multi-chain
+      - --db-schema=lotto-multi-chain
+      - --disable-historical
+      - --skipTransactions
+      - --port=3002
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3002/ready"]
       interval: 3s
       timeout: 5s
       retries: 10
@@ -51,7 +80,9 @@ services:
     depends_on:
       "postgres":
         condition: service_healthy
-      "subquery-node":
+      "subquery-node-shibuya":
+        condition: service_healthy
+      "subquery-node-minato":
         condition: service_healthy
     restart: always
     environment:
@@ -61,6 +92,5 @@ services:
       DB_HOST: postgres
       DB_PORT: 5432
     command:
-      - --name=app
+      - --name=lotto-multi-chain
       - --playground
-      - --indexer=http://subquery-node:3000

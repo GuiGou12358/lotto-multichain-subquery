@@ -1,0 +1,7 @@
+specVersion: 1.0.0
+query:
+  name: lotto-subql-multichain
+  version: 0.1.0
+projects:
+  - project-shibuya.yaml
+  - project-minato.yaml
