@@ -5,6 +5,11 @@ import {WasmEvent} from "@subql/substrate-wasm-processor";
 import {AccountId} from "@polkadot/types/interfaces/runtime";
 import type {UInt} from '@polkadot/types-codec';
 
+import {
+    ParticipantRegisteredLog,
+} from "../types/abi-interfaces/LottoClient";
+import assert from "assert";
+
 
 type RaffleStartedEvent = [UInt] & {
     num_raffle: UInt,
@@ -94,6 +99,41 @@ export async function handleParticipationRegistered(event: WasmEvent<Participati
     await participation.save();
 }
 
+
+export async function handleParticipationRegisteredMinato(log: ParticipantRegisteredLog): Promise<void> {
+    await logger.info(`---------- Participation Registered on Minato at block ${log.blockNumber}`);
+    //assert(log.args, "No log.args");
+/*
+    const transaction = Transfer.create({
+        id: log.transactionHash,
+        blockHeight: BigInt(log.blockNumber),
+        to: log.args.to,
+        from: log.args.from,
+        value: log.args.value.toBigInt(),
+        contractAddress: log.address,
+    });
+
+    await transaction.save();
+
+ */
+    if (!log.args) {
+        await logger.warn("No Args for handleParticipationRegisteredMinato !!!");
+        return;
+    }
+    await logger.info(`---------- logIndex: ${log.logIndex}`);
+    await logger.info(`---------- raffleId: ${log.args._raffleId}`);
+    await logger.info(`---------- accountId: ${log.args._participant}`);
+    await logger.info(`---------- numbers: ${log.args._numbers}`);
+
+    let participation = Participation.create({
+        id: `${log.blockNumber.valueOf()}-${log.logIndex.valueOf()}`,
+        num_raffle: log.args._raffleId.toBigInt(),
+        accountId: log.args._participant.toString(),
+        numbers: log.args._numbers.map(value => value.toBigInt()),
+    });
+    await participation.save();
+
+}
 
 
 
