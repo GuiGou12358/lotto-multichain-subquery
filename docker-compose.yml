@@ -76,7 +76,7 @@ services:
   graphql-engine:
     image: subquerynetwork/subql-query:latest
     ports:
-      - 3000:3000
+      - 3010:3010
     depends_on:
       "postgres":
         condition: service_healthy
@@ -94,3 +94,4 @@ services:
     command:
       - --name=lotto-multi-chain
       - --playground
+      - --port=3010
