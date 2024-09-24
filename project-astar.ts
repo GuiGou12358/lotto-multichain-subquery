@@ -51,7 +51,7 @@ const projectAstar: SubstrateProject<WasmDatasource> = {
                         }
                     },
                     {
-                        handler: "handleRaffleEnded",
+                        handler: "handleRaffleEndedAstar",
                         kind: "substrate/WasmEvent",
                         filter: {
                             identifier: "RaffleEnded"

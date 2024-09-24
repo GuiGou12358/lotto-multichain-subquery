@@ -64,6 +64,15 @@ const projectMinato: EthereumProject = {
                             ],
                         },
                     },
+                    {
+                        kind: EthereumHandlerKind.Event,
+                        handler: "handleRaffleEndedMinato",
+                        filter: {
+                            topics: [
+                                "RaffleEnded(uint256 indexed _raffleId)",
+                            ],
+                        },
+                    },
                 ],
             },
         },

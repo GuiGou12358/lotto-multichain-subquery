@@ -63,14 +63,14 @@ const projectShibuya: SubstrateProject<WasmDatasource> = {
                         }
                     },
                     {
-                        handler: "handleRaffleEnded",
+                        handler: "handleRaffleEndedShibuya",
                         kind: "substrate/WasmEvent",
                         filter: {
                             identifier: "RaffleEnded"
                         }
                     },
                     {
-                        handler: "handleParticipationRegistered",
+                        handler: "handleParticipationRegisteredShibuya",
                         kind: "substrate/WasmEvent",
                         filter: {
                             identifier: "ParticipationRegistered"
@@ -124,7 +124,7 @@ const projectShibuya: SubstrateProject<WasmDatasource> = {
                         }
                     },
                     {
-                        handler: "handleParticipationRegistered",
+                        handler: "handleParticipationRegisteredShibuya",
                         kind: "substrate/WasmEvent",
                         filter: {
                             identifier: "ParticipationRegistered"
