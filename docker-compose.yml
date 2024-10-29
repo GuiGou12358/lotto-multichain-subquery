@@ -10,7 +10,7 @@ services:
     environment:
       POSTGRES_PASSWORD: postgres
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
       interval: 5s
       timeout: 5s
       retries: 5
@@ -39,7 +39,7 @@ services:
       - --skipTransactions
       - --port=3001
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3001/ready"]
+      test: [ "CMD", "curl", "-f", "http://localhost:3001/ready" ]
       interval: 3s
       timeout: 5s
       retries: 10
@@ -68,7 +68,7 @@ services:
       - --skipTransactions
       - --port=3002
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3002/ready"]
+      test: [ "CMD", "curl", "-f", "http://localhost:3002/ready" ]
       interval: 3s
       timeout: 5s
       retries: 10
@@ -76,7 +76,7 @@ services:
   graphql-engine:
     image: subquerynetwork/subql-query:latest
     ports:
-      - 3010:3010
+      - 3100:3100
     depends_on:
       "postgres":
         condition: service_healthy
@@ -94,4 +94,4 @@ services:
     command:
       - --name=lotto-multi-chain
       - --playground
-      - --port=3010
+      - --port=3100

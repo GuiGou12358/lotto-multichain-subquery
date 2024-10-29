@@ -1,25 +1,27 @@
 {
-  "name": "lotto-subquery",
+  "name": "lotto-multichain-subquery",
   "version": "1.0.0",
-  "description": "SubQuery Indexer for the Lotto dApp",
+  "description": "SubQuery Indexer for the Lotto dApp Multi-chain",
   "main": "dist/index.js",
   "scripts": {
-    "codegen-shibuya": "subql codegen -f project-shibuya.ts",
+    "build-dev": "yarn codegen && yarn build-shibuya && yarn build-minato && yarn build-moonbase",
+    "codegen": "subql codegen -f project-minato.ts",
     "build-shibuya": "subql build -f project-shibuya.ts",
-    "codegen-astar": "subql codegen -f project-astar.ts",
-    "build-astar": "subql build -f project-astar.ts",
+    "build-minato": "subql build -f project-minato.ts",
+    "build-moonbase": "subql build -f project-moonbase.ts",
     "start:docker": "docker compose pull && docker compose up --remove-orphans",
     "dev": "subql codegen && subql build && docker compose pull && docker compose up --remove-orphans",
     "prepack": "rm -rf dist && npm run build",
     "test": "subql build && subql-node test"
   },
-  "homepage": "https://github.com/GuiGou12358/lotto-subquery",
-  "repository": "https://github.com/GuiGou12358/lotto-subquery",
+  "homepage": "https://github.com/GuiGou12358/lotto-multichain-subquery",
+  "repository": "https://github.com/GuiGou12358/lotto-multichain-subquery",
   "files": [
     "dist",
     "schema.graphql",
-    "project-shibuya.ts",
-    "project-astar.ts"
+    "prject-shibuya.ts",
+    "prject-minato.ts",
+    "prject-moonbase.ts"
   ],
   "author": "GuiGou",
   "license": "Apache-2.0",
@@ -31,13 +33,13 @@
     "assert": "^2.1.0"
   },
   "devDependencies": {
-    "@polkadot/api": "^12.4.2",
-    "@subql/cli": "^5.2.7",
-    "@subql/node": "^5.2.5",
-    "@subql/node-ethereum": "^5.1.3",
+    "@polkadot/api": "^14.2.1",
+    "@subql/cli": "^5.3.0",
+    "@subql/node": "^5.2.8",
+    "@subql/node-ethereum": "^5.1.7",
     "@subql/substrate-wasm-processor": "^1.0.0",
-    "@subql/testing": "^2.2.1",
-    "@subql/types": "^3.11.2",
+    "@subql/testing": "^2.2.2",
+    "@subql/types": "^3.11.3",
     "ethers": "^5.7.2",
     "typescript": "^5.6.2"
   },

@@ -1,28 +1,12 @@
-import {
-    EthereumProject,
-    EthereumDatasourceKind,
-    EthereumHandlerKind,
-} from "@subql/types-ethereum";
-
-/*
-import * as dotenv from 'dotenv';
-import path from 'path';
-
-const mode = process.env.NODE_ENV || 'production';
-
-// Load the appropriate .env file
-const dotenvPath = path.resolve(__dirname, `.env${mode !== 'production' ? `.${mode}` : ''}`);
-dotenv.config({ path: dotenvPath });
-
- */
+import {EthereumDatasourceKind, EthereumHandlerKind, EthereumProject,} from "@subql/types-ethereum";
 
 // Can expand the Datasource processor types via the generic param
-const projectMinato: EthereumProject = {
+const projectMoonbase: EthereumProject = {
     specVersion: "1.0.0",
     version: "1.0.0",
-    name: "lotto-multichain-subql-minato",
+    name: "lotto-multichain-subql-moonbase",
     description:
-        "This SubQuery project indexes data used by the Lotto dApp on Minato",
+        "This SubQuery project indexes data used by the Lotto dApp on Moonbase",
     runner: {
         node: {
             name: "@subql/node-ethereum",
@@ -37,16 +21,17 @@ const projectMinato: EthereumProject = {
         file: "./schema.graphql",
     },
     network: {
-        chainId: '1946',
-        endpoint: ["https://rpc.minato.soneium.org"],
+        chainId: '1287',
+        endpoint: ["https://rpc.api.moonbase.moonbeam.network"],
     },
     dataSources: [
         {
             kind: EthereumDatasourceKind.Runtime,
-            startBlock: 3521200,
+            startBlock: 9239800,
+
             options: {
                 abi: "RaffleRegistration",
-                address: "0x474F65998C79CD63843A33c46cd6B6B00dE455AB",
+                address: "0x29621E6F2b7DBf256Ff0028dc04986C5E14Db50c",
             },
             assets: new Map([["RaffleRegistration", { file: "./abi/RaffleRegistration.json" }]]),
             mapping: {
@@ -113,4 +98,4 @@ const projectMinato: EthereumProject = {
 };
 
 // Must set default to the project instance
-export default projectMinato;
+export default projectMoonbase;

@@ -1,12 +1,12 @@
-import {SubstrateDatasourceKind, SubstrateHandlerKind, SubstrateProject,} from "@subql/types";
-
+import {SubstrateProject} from "@subql/types";
 import {WasmDatasource} from "@subql/substrate-wasm-processor";
+import {handleNumbersDrawnInManager} from "./src";
 
 // Can expand the Datasource processor types via the generic param
 const projectShibuya: SubstrateProject<WasmDatasource> = {
     specVersion: "1.0.0",
-    version: "3.0.0",
-    name: "lotto-subql-shibuya",
+    version: "1.0.0",
+    name: "lotto-multichain-subql-shibuya",
     description:
         "This SubQuery project indexes data used by the Lotto dApp on Shibuya network",
     runner: {
@@ -33,121 +33,132 @@ const projectShibuya: SubstrateProject<WasmDatasource> = {
          * If you use a rate limited endpoint, adjust the --batch-size and --workers parameters
          * These settings can be found in your docker-compose.yaml, they will slow indexing but prevent your project being rate limited
          *
-         *
          *         endpoint: ["wss://rpc.shibuya.astar.network", "wss://shibuya-rpc.dwellir.com"],
          */
         endpoint: ["wss://rpc.shibuya.astar.network"],
-        bypassBlocks: [5891857]
+        bypassBlocks: []
     },
     dataSources: [
         {
             kind: "substrate/Wasm",
-            startBlock: 7170350,
+            startBlock: 7717400,
             //endBlock: 1,
             processor: {
                 file: "./node_modules/@subql/substrate-wasm-processor/dist/bundle.js",
                 options: {
-                    abi: "lotto",
-                    contract: "bQBYitAbSZuJUvL2ZGqinseRXrcTggZ6F4TvJKYrR7WvkvJ",
+                    abi: "lotto-registration",
+                    contract: "ZvzNqBdnQmg2nmDnPNF9dirosinGsX53hG1Exc5xqHzJHVX",
                 },
             },
-            assets: new Map([["lotto", {file: "./metadata_shibuya/lotto_contract.json"}]]),
+            assets: new Map([["lotto-registration", {file: "./metadata/lotto_registration_contract.json"}]]),
             mapping: {
                 file: "./dist/index.js",
                 handlers: [
                     {
-                        handler: "handleRaffleStarted",
+                        handler: "handleConfigUpdatedWASM",
                         kind: "substrate/WasmEvent",
                         filter: {
-                            identifier: "RaffleStarted"
+                            identifier: "ConfigUpdated"
                         }
                     },
                     {
-                        handler: "handleRaffleEndedShibuya",
+                        handler: "handleStartedWASM",
                         kind: "substrate/WasmEvent",
                         filter: {
-                            identifier: "RaffleEnded"
+                            identifier: "Started"
                         }
                     },
                     {
-                        handler: "handleParticipationRegisteredShibuya",
+                        handler: "handleRegistrationsOpenWASM",
+                        kind: "substrate/WasmEvent",
+                        filter: {
+                            identifier: "RegistrationsOpen"
+                        }
+                    },
+                    {
+                        handler: "handleRegistrationsClosedWASM",
+                        kind: "substrate/WasmEvent",
+                        filter: {
+                            identifier: "RegistrationsClosed"
+                        }
+                    },
+                    {
+                        handler: "handleResultsReceivedWASM",
+                        kind: "substrate/WasmEvent",
+                        filter: {
+                            identifier: "ResultsReceived"
+                        }
+                    },
+                    {
+                        handler: "handleParticipationRegisteredWASM",
                         kind: "substrate/WasmEvent",
                         filter: {
                             identifier: "ParticipationRegistered"
                         }
                     },
-                    {
-                        handler: "handleResultReceived",
-                        kind: "substrate/WasmEvent",
-                        filter: {
-                            identifier: "ResultReceived"
-                        }
-                    },
-                    {
-                        handler: "handleWinnersRevealed",
-                        kind: "substrate/WasmEvent",
-                        filter: {
-                            identifier: "WinnersRevealed"
-                        }
-                    }
-                ]
-            }
+                ],
+            },
         },
-        /*
         {
             kind: "substrate/Wasm",
-            startBlock: 7170350,
+            startBlock: 7717400,
             //endBlock: 1,
             processor: {
                 file: "./node_modules/@subql/substrate-wasm-processor/dist/bundle.js",
                 options: {
-                    abi: "lotto_v2",
-                    contract: "aB9AxBVmoYogZ5ZAX662R5YJafTVCqVbtGzJYX3LvvwZW5r",
+                    abi: "lotto-registration-manager",
+                    contract: "Wb418H1VdYF2fnfQgfhShiu8fK1nbEr9hVE2yHMo6r7p7aF",
                 },
             },
-            assets: new Map([["lotto_v2", {file: "./metadata_shibuya/lotto_contract_v2.json"}]]),
+            assets: new Map([["lotto-registration-manager", {file: "./metadata/lotto_registration_manager_contract.json"}]]),
             mapping: {
                 file: "./dist/index.js",
                 handlers: [
                     {
-                        handler: "handleRaffleStarted",
+                        handler: "handleLottoStartedInManager",
                         kind: "substrate/WasmEvent",
                         filter: {
-                            identifier: "RaffleStarted"
+                            identifier: "LottoStarted"
                         }
                     },
                     {
-                        handler: "handleRaffleEnded",
+                        handler: "handleRegistrationsOpenInManager",
                         kind: "substrate/WasmEvent",
                         filter: {
-                            identifier: "RaffleEnded"
+                            identifier: "RegistrationsOpen"
                         }
                     },
                     {
-                        handler: "handleParticipationRegisteredShibuya",
+                        handler: "handleRegistrationsClosedInManager",
                         kind: "substrate/WasmEvent",
                         filter: {
-                            identifier: "ParticipationRegistered"
+                            identifier: "RegistrationsClosed"
                         }
                     },
                     {
-                        handler: "handleResultReceived",
+                        handler: "handleNumbersDrawnInManager",
                         kind: "substrate/WasmEvent",
                         filter: {
-                            identifier: "ResultReceived"
+                            identifier: "NumbersDrawn"
                         }
                     },
                     {
-                        handler: "handleWinnersRevealed",
+                        handler: "handleWinnersRevealedInManager",
                         kind: "substrate/WasmEvent",
                         filter: {
                             identifier: "WinnersRevealed"
                         }
-                    }
-                ]
-            }
-        }
-         */
+                    },
+                    {
+                        handler: "handleLottoClosedInManager",
+                        kind: "substrate/WasmEvent",
+                        filter: {
+                            identifier: "LottoClosed"
+                        }
+                    },
+                ],
+            },
+        },
     ],
 };
 

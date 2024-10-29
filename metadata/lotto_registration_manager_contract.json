@@ -1,11 +1,11 @@
 {
   "source": {
-    "hash": "0x6623c5a032b563af37ffbd7e1608b92bef7684d82e7bb64a9adf83019b8c81dc",
+    "hash": "0xa934b0fcce5828aa048a7d82191749f739bcde12955341132426e98966c510ce",
     "language": "ink! 4.3.0",
-    "compiler": "rustc 1.76.0",
+    "compiler": "rustc 1.80.1",
     "build_info": {
-      "build_mode": "Release",
-      "cargo_contract_version": "3.2.0",
+      "build_mode": "Debug",
+      "cargo_contract_version": "4.1.1",
       "rust_toolchain": "stable-x86_64-unknown-linux-gnu",
       "wasm_opt_settings": {
         "keep_debug_symbols": false,
@@ -14,12 +14,13 @@
     }
   },
   "contract": {
-    "name": "lotto_contract",
+    "name": "lotto_registration_manager_contract",
     "version": "1.0.0",
     "authors": [
       "guigou"
     ]
   },
+  "image": null,
   "spec": {
     "constructors": [
       {
@@ -33,7 +34,7 @@
             "ink_primitives",
             "ConstructorResult"
           ],
-          "type": 10
+          "type": 11
         },
         "selector": "0x9bae9d5e"
       }
@@ -62,20 +63,20 @@
         "displayName": [
           "ChainExtension"
         ],
-        "type": 67
+        "type": 64
       },
       "hash": {
         "displayName": [
           "Hash"
         ],
-        "type": 56
+        "type": 49
       },
       "maxEventTopics": 4,
       "timestamp": {
         "displayName": [
           "Timestamp"
         ],
-        "type": 66
+        "type": 63
       }
     },
     "events": [
@@ -83,90 +84,68 @@
         "args": [
           {
             "docs": [],
-            "indexed": true,
-            "label": "raffle_id",
-            "type": {
-              "displayName": [
-                "RaffleId"
-              ],
-              "type": 3
-            }
-          },
-          {
-            "docs": [],
-            "indexed": true,
-            "label": "participant",
-            "type": {
-              "displayName": [
-                "AccountId"
-              ],
-              "type": 0
-            }
-          },
-          {
-            "docs": [],
             "indexed": false,
-            "label": "numbers",
+            "label": "config",
             "type": {
               "displayName": [
-                "Vec"
+                "Config"
               ],
-              "type": 8
+              "type": 13
             }
           }
         ],
         "docs": [
-          "Event emitted when the participant is registered"
+          "Event emitted when the lotto is started"
         ],
-        "label": "ParticipationRegistered"
+        "label": "LottoStarted"
       },
       {
         "args": [
           {
             "docs": [],
             "indexed": true,
-            "label": "raffle_id",
+            "label": "draw_number",
             "type": {
               "displayName": [
-                "RaffleId"
-              ],
-              "type": 3
-            }
-          }
-        ],
-        "docs": [
-          "Event emitted when the raffle is started"
-        ],
-        "label": "RaffleStarted"
-      },
-      {
-        "args": [
-          {
-            "docs": [],
-            "indexed": true,
-            "label": "raffle_id",
-            "type": {
-              "displayName": [
-                "RaffleId"
+                "DrawNumber"
               ],
               "type": 3
             }
           }
         ],
         "docs": [
-          "Event emitted when the raffle is ended"
+          "Event emitted when the registrations are open"
         ],
-        "label": "RaffleEnded"
+        "label": "RegistrationsOpen"
       },
       {
         "args": [
           {
             "docs": [],
             "indexed": true,
-            "label": "raffle_id",
+            "label": "draw_number",
             "type": {
               "displayName": [
-                "RaffleId"
+                "DrawNumber"
+              ],
+              "type": 3
+            }
+          }
+        ],
+        "docs": [
+          "Event emitted when the registrations are closed"
+        ],
+        "label": "RegistrationsClosed"
+      },
+      {
+        "args": [
+          {
+            "docs": [],
+            "indexed": true,
+            "label": "draw_number",
+            "type": {
+              "displayName": [
+                "DrawNumber"
               ],
               "type": 3
             }
@@ -179,24 +158,24 @@
               "displayName": [
                 "Vec"
               ],
-              "type": 8
+              "type": 9
             }
           }
         ],
         "docs": [
-          "Event emitted when the raffle result is received"
+          "Event emitted when the winning numbers are received"
         ],
-        "label": "ResultReceived"
+        "label": "NumbersDrawn"
       },
       {
         "args": [
           {
             "docs": [],
             "indexed": true,
-            "label": "raffle_id",
+            "label": "draw_number",
             "type": {
               "displayName": [
-                "RaffleId"
+                "DrawNumber"
               ],
               "type": 3
             }
@@ -209,7 +188,7 @@
               "displayName": [
                 "Vec"
               ],
-              "type": 9
+              "type": 10
             }
           }
         ],
@@ -219,64 +198,11 @@
         "label": "WinnersRevealed"
       },
       {
-        "args": [
-          {
-            "docs": [],
-            "indexed": true,
-            "label": "account",
-            "type": {
-              "displayName": [
-                "AccountId"
-              ],
-              "type": 0
-            }
-          },
-          {
-            "docs": [],
-            "indexed": false,
-            "label": "amount",
-            "type": {
-              "displayName": [
-                "Balance"
-              ],
-              "type": 6
-            }
-          }
-        ],
+        "args": [],
         "docs": [
-          "Event emitted when a reward is pending"
+          "Event emitted when the lotto is closed"
         ],
-        "label": "PendingReward"
-      },
-      {
-        "args": [
-          {
-            "docs": [],
-            "indexed": true,
-            "label": "account",
-            "type": {
-              "displayName": [
-                "AccountId"
-              ],
-              "type": 0
-            }
-          },
-          {
-            "docs": [],
-            "indexed": false,
-            "label": "amount",
-            "type": {
-              "displayName": [
-                "Balance"
-              ],
-              "type": 6
-            }
-          }
-        ],
-        "docs": [
-          "Event emitted when a user claim rewards"
-        ],
-        "label": "RewardsClaimed"
+        "label": "LottoClosed"
       },
       {
         "args": [
@@ -333,61 +259,9 @@
         "ink",
         "LangError"
       ],
-      "type": 11
+      "type": 12
     },
     "messages": [
-      {
-        "args": [
-          {
-            "label": "numbers",
-            "type": {
-              "displayName": [
-                "Vec"
-              ],
-              "type": 8
-            }
-          }
-        ],
-        "default": false,
-        "docs": [],
-        "label": "participate",
-        "mutates": true,
-        "payable": false,
-        "returnType": {
-          "displayName": [
-            "ink",
-            "MessageResult"
-          ],
-          "type": 12
-        },
-        "selector": "0xd1e4565a"
-      },
-      {
-        "args": [
-          {
-            "label": "numbers",
-            "type": {
-              "displayName": [
-                "Vec"
-              ],
-              "type": 18
-            }
-          }
-        ],
-        "default": false,
-        "docs": [],
-        "label": "participate_batch",
-        "mutates": true,
-        "payable": false,
-        "returnType": {
-          "displayName": [
-            "ink",
-            "MessageResult"
-          ],
-          "type": 12
-        },
-        "selector": "0x184062c7"
-      },
       {
         "args": [
           {
@@ -396,7 +270,7 @@
               "displayName": [
                 "Config"
               ],
-              "type": 19
+              "type": 13
             }
           }
         ],
@@ -410,15 +284,25 @@
             "ink",
             "MessageResult"
           ],
-          "type": 20
+          "type": 14
         },
         "selector": "0xcfdf5c7b"
       },
       {
-        "args": [],
+        "args": [
+          {
+            "label": "registration_contracts",
+            "type": {
+              "displayName": [
+                "Vec"
+              ],
+              "type": 8
+            }
+          }
+        ],
         "default": false,
         "docs": [],
-        "label": "start_raffle",
+        "label": "set_registration_contracts",
         "mutates": true,
         "payable": false,
         "returnType": {
@@ -426,15 +310,57 @@
             "ink",
             "MessageResult"
           ],
-          "type": 22
+          "type": 14
         },
-        "selector": "0x60fb6573"
+        "selector": "0xe4d866c5"
+      },
+      {
+        "args": [
+          {
+            "label": "previous_draw_number",
+            "type": {
+              "displayName": [
+                "Option"
+              ],
+              "type": 20
+            }
+          }
+        ],
+        "default": false,
+        "docs": [],
+        "label": "start",
+        "mutates": true,
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "ink",
+            "MessageResult"
+          ],
+          "type": 14
+        },
+        "selector": "0x3c1e3986"
       },
       {
         "args": [],
         "default": false,
         "docs": [],
-        "label": "complete_raffle",
+        "label": "can_close_registrations",
+        "mutates": false,
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "ink",
+            "MessageResult"
+          ],
+          "type": 21
+        },
+        "selector": "0xa7df1647"
+      },
+      {
+        "args": [],
+        "default": false,
+        "docs": [],
+        "label": "close_registrations",
         "mutates": true,
         "payable": false,
         "returnType": {
@@ -442,9 +368,25 @@
             "ink",
             "MessageResult"
           ],
-          "type": 12
+          "type": 14
         },
-        "selector": "0xdba78f83"
+        "selector": "0x09bfb935"
+      },
+      {
+        "args": [],
+        "default": false,
+        "docs": [],
+        "label": "has_pending_message",
+        "mutates": false,
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "ink",
+            "MessageResult"
+          ],
+          "type": 21
+        },
+        "selector": "0xe856bb7e"
       },
       {
         "args": [
@@ -468,7 +410,7 @@
             "ink",
             "MessageResult"
           ],
-          "type": 24
+          "type": 23
         },
         "selector": "0x8f3a95f4"
       },
@@ -484,7 +426,7 @@
             "ink",
             "MessageResult"
           ],
-          "type": 26
+          "type": 25
         },
         "selector": "0x760a2625"
       },
@@ -500,7 +442,7 @@
             "ink",
             "MessageResult"
           ],
-          "type": 26
+          "type": 25
         },
         "selector": "0x91aa3500"
       },
@@ -516,7 +458,7 @@
             "ink",
             "MessageResult"
           ],
-          "type": 12
+          "type": 14
         },
         "selector": "0x17feb370"
       },
@@ -542,7 +484,7 @@
             "ink",
             "MessageResult"
           ],
-          "type": 12
+          "type": 14
         },
         "selector": "0x410fcc9d"
       },
@@ -558,7 +500,7 @@
             "ink",
             "MessageResult"
           ],
-          "type": 27
+          "type": 26
         },
         "selector": "0x77c110bf"
       },
@@ -566,7 +508,7 @@
         "args": [],
         "default": false,
         "docs": [],
-        "label": "Raffle::get_current_raffle_id",
+        "label": "RaffleManager::get_status",
         "mutates": false,
         "payable": false,
         "returnType": {
@@ -574,15 +516,15 @@
             "ink",
             "MessageResult"
           ],
-          "type": 26
+          "type": 28
         },
-        "selector": "0x444d9941"
+        "selector": "0x3deba805"
       },
       {
         "args": [],
         "default": false,
         "docs": [],
-        "label": "Raffle::get_current_status",
+        "label": "RaffleManager::get_registration_contracts",
         "mutates": false,
         "payable": false,
         "returnType": {
@@ -590,17 +532,17 @@
             "ink",
             "MessageResult"
           ],
-          "type": 29
+          "type": 30
         },
-        "selector": "0xeb732a97"
+        "selector": "0x0e7dabfa"
       },
       {
         "args": [
           {
-            "label": "raffle_id",
+            "label": "draw_number",
             "type": {
               "displayName": [
-                "raffle_external",
+                "rafflemanager_external",
                 "GetWinnersInput1"
               ],
               "type": 3
@@ -609,7 +551,7 @@
         ],
         "default": false,
         "docs": [],
-        "label": "Raffle::get_winners",
+        "label": "RaffleManager::get_winners",
         "mutates": false,
         "payable": false,
         "returnType": {
@@ -619,15 +561,15 @@
           ],
           "type": 31
         },
-        "selector": "0x8b69753f"
+        "selector": "0x61b9ce53"
       },
       {
         "args": [
           {
-            "label": "raffle_id",
+            "label": "draw_number",
             "type": {
               "displayName": [
-                "raffle_external",
+                "rafflemanager_external",
                 "GetResultsInput1"
               ],
               "type": 3
@@ -636,7 +578,7 @@
         ],
         "default": false,
         "docs": [],
-        "label": "Raffle::get_results",
+        "label": "RaffleManager::get_results",
         "mutates": false,
         "payable": false,
         "returnType": {
@@ -646,16 +588,25 @@
           ],
           "type": 33
         },
-        "selector": "0x319b058b"
+        "selector": "0x58682d1a"
       },
       {
-        "args": [],
-        "default": false,
-        "docs": [
-          " return the total pending reward"
+        "args": [
+          {
+            "label": "registration_contract",
+            "type": {
+              "displayName": [
+                "rafflemanager_external",
+                "GetRegistrationContractStatusInput1"
+              ],
+              "type": 6
+            }
+          }
         ],
-        "label": "RewardManager::get_total_pending_rewards",
-        "mutates": true,
+        "default": false,
+        "docs": [],
+        "label": "RaffleManager::get_registration_contract_status",
+        "mutates": false,
         "payable": false,
         "returnType": {
           "displayName": [
@@ -664,50 +615,13 @@
           ],
           "type": 35
         },
-        "selector": "0xb9a36ad1"
+        "selector": "0xf0456f98"
       },
       {
         "args": [],
         "default": false,
         "docs": [],
-        "label": "RewardManager::fund",
-        "mutates": true,
-        "payable": true,
-        "returnType": {
-          "displayName": [
-            "ink",
-            "MessageResult"
-          ],
-          "type": 20
-        },
-        "selector": "0x6e7f485c"
-      },
-      {
-        "args": [],
-        "default": false,
-        "docs": [
-          " claim all pending rewards for the current account",
-          " After claiming, there is not anymore pending rewards for this account"
-        ],
-        "label": "RewardManager::claim",
-        "mutates": true,
-        "payable": false,
-        "returnType": {
-          "displayName": [
-            "ink",
-            "MessageResult"
-          ],
-          "type": 20
-        },
-        "selector": "0x5f8b7ca2"
-      },
-      {
-        "args": [],
-        "default": false,
-        "docs": [
-          " return true if the current account has pending rewards"
-        ],
-        "label": "RewardManager::has_pending_rewards",
+        "label": "RaffleManager::get_draw_number",
         "mutates": false,
         "payable": false,
         "returnType": {
@@ -715,144 +629,9 @@
             "ink",
             "MessageResult"
           ],
-          "type": 36
+          "type": 25
         },
-        "selector": "0x80598ed8"
-      },
-      {
-        "args": [
-          {
-            "label": "from",
-            "type": {
-              "displayName": [
-                "rewardmanager_external",
-                "GetPendingRewardsFromInput1"
-              ],
-              "type": 0
-            }
-          }
-        ],
-        "default": false,
-        "docs": [
-          " return the pending rewards for a given account."
-        ],
-        "label": "RewardManager::get_pending_rewards_from",
-        "mutates": true,
-        "payable": false,
-        "returnType": {
-          "displayName": [
-            "ink",
-            "MessageResult"
-          ],
-          "type": 38
-        },
-        "selector": "0x6af8ea62"
-      },
-      {
-        "args": [
-          {
-            "label": "from",
-            "type": {
-              "displayName": [
-                "rewardmanager_external",
-                "HasPendingRewardsFromInput1"
-              ],
-              "type": 0
-            }
-          }
-        ],
-        "default": false,
-        "docs": [
-          " return true if the given account has pending rewards"
-        ],
-        "label": "RewardManager::has_pending_rewards_from",
-        "mutates": true,
-        "payable": false,
-        "returnType": {
-          "displayName": [
-            "ink",
-            "MessageResult"
-          ],
-          "type": 36
-        },
-        "selector": "0x41c593ae"
-      },
-      {
-        "args": [
-          {
-            "label": "from",
-            "type": {
-              "displayName": [
-                "rewardmanager_external",
-                "ClaimFromInput1"
-              ],
-              "type": 0
-            }
-          }
-        ],
-        "default": false,
-        "docs": [
-          " claim all pending rewards for the given account",
-          " After claiming, there is not anymore pending rewards for this account"
-        ],
-        "label": "RewardManager::claim_from",
-        "mutates": true,
-        "payable": false,
-        "returnType": {
-          "displayName": [
-            "ink",
-            "MessageResult"
-          ],
-          "type": 20
-        },
-        "selector": "0xa7118ada"
-      },
-      {
-        "args": [
-          {
-            "label": "conditions",
-            "type": {
-              "displayName": [
-                "rollupanchor_external",
-                "RollupCondEqInput1"
-              ],
-              "type": 40
-            }
-          },
-          {
-            "label": "updates",
-            "type": {
-              "displayName": [
-                "rollupanchor_external",
-                "RollupCondEqInput2"
-              ],
-              "type": 40
-            }
-          },
-          {
-            "label": "actions",
-            "type": {
-              "displayName": [
-                "rollupanchor_external",
-                "RollupCondEqInput3"
-              ],
-              "type": 43
-            }
-          }
-        ],
-        "default": false,
-        "docs": [],
-        "label": "RollupAnchor::rollup_cond_eq",
-        "mutates": true,
-        "payable": false,
-        "returnType": {
-          "displayName": [
-            "ink",
-            "MessageResult"
-          ],
-          "type": 45
-        },
-        "selector": "0x95233d74"
+        "selector": "0x4272d0ae"
       },
       {
         "args": [
@@ -877,36 +656,46 @@
             "ink",
             "MessageResult"
           ],
-          "type": 47
+          "type": 37
         },
         "selector": "0xdfec736d"
       },
       {
         "args": [
           {
-            "label": "request",
+            "label": "conditions",
             "type": {
               "displayName": [
-                "metatransaction_external",
-                "MetaTxRollupCondEqInput1"
+                "rollupanchor_external",
+                "RollupCondEqInput1"
               ],
-              "type": 48
+              "type": 39
             }
           },
           {
-            "label": "signature",
+            "label": "updates",
             "type": {
               "displayName": [
-                "metatransaction_external",
-                "MetaTxRollupCondEqInput2"
+                "rollupanchor_external",
+                "RollupCondEqInput2"
               ],
-              "type": 49
+              "type": 39
+            }
+          },
+          {
+            "label": "actions",
+            "type": {
+              "displayName": [
+                "rollupanchor_external",
+                "RollupCondEqInput3"
+              ],
+              "type": 41
             }
           }
         ],
         "default": false,
         "docs": [],
-        "label": "MetaTransaction::meta_tx_rollup_cond_eq",
+        "label": "RollupAnchor::rollup_cond_eq",
         "mutates": true,
         "payable": false,
         "returnType": {
@@ -914,9 +703,9 @@
             "ink",
             "MessageResult"
           ],
-          "type": 50
+          "type": 43
         },
-        "selector": "0x8eb77024"
+        "selector": "0x95233d74"
       },
       {
         "args": [
@@ -951,9 +740,62 @@
             "ink",
             "MessageResult"
           ],
-          "type": 53
+          "type": 45
         },
         "selector": "0x3ecc267e"
+      },
+      {
+        "args": [
+          {
+            "label": "request",
+            "type": {
+              "displayName": [
+                "metatransaction_external",
+                "MetaTxRollupCondEqInput1"
+              ],
+              "type": 48
+            }
+          },
+          {
+            "label": "signature",
+            "type": {
+              "displayName": [
+                "metatransaction_external",
+                "MetaTxRollupCondEqInput2"
+              ],
+              "type": 51
+            }
+          }
+        ],
+        "default": false,
+        "docs": [],
+        "label": "MetaTransaction::meta_tx_rollup_cond_eq",
+        "mutates": true,
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "ink",
+            "MessageResult"
+          ],
+          "type": 52
+        },
+        "selector": "0x8eb77024"
+      },
+      {
+        "args": [],
+        "default": false,
+        "docs": [],
+        "label": "Ownable::renounce_ownership",
+        "mutates": true,
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "ink",
+            "MessageResult"
+          ],
+          "type": 54
+        },
+        "selector": "0x5e228753"
       },
       {
         "args": [
@@ -978,25 +820,9 @@
             "ink",
             "MessageResult"
           ],
-          "type": 58
+          "type": 54
         },
         "selector": "0x11f43efd"
-      },
-      {
-        "args": [],
-        "default": false,
-        "docs": [],
-        "label": "Ownable::renounce_ownership",
-        "mutates": true,
-        "payable": false,
-        "returnType": {
-          "displayName": [
-            "ink",
-            "MessageResult"
-          ],
-          "type": 58
-        },
-        "selector": "0x5e228753"
       },
       {
         "args": [],
@@ -1010,7 +836,7 @@
             "ink",
             "MessageResult"
           ],
-          "type": 61
+          "type": 58
         },
         "selector": "0x4fa43c8c"
       },
@@ -1047,7 +873,7 @@
             "ink",
             "MessageResult"
           ],
-          "type": 36
+          "type": 21
         },
         "selector": "0xc1d9ac18"
       },
@@ -1074,46 +900,9 @@
             "ink",
             "MessageResult"
           ],
-          "type": 26
+          "type": 25
         },
         "selector": "0x83da3bb2"
-      },
-      {
-        "args": [
-          {
-            "label": "role",
-            "type": {
-              "displayName": [
-                "accesscontrol_external",
-                "RevokeRoleInput1"
-              ],
-              "type": 3
-            }
-          },
-          {
-            "label": "account",
-            "type": {
-              "displayName": [
-                "accesscontrol_external",
-                "RevokeRoleInput2"
-              ],
-              "type": 57
-            }
-          }
-        ],
-        "default": false,
-        "docs": [],
-        "label": "AccessControl::revoke_role",
-        "mutates": true,
-        "payable": false,
-        "returnType": {
-          "displayName": [
-            "ink",
-            "MessageResult"
-          ],
-          "type": 24
-        },
-        "selector": "0x6e4f0991"
       },
       {
         "args": [
@@ -1148,7 +937,7 @@
             "ink",
             "MessageResult"
           ],
-          "type": 24
+          "type": 23
         },
         "selector": "0x4ac062fd"
       },
@@ -1185,9 +974,46 @@
             "ink",
             "MessageResult"
           ],
-          "type": 24
+          "type": 23
         },
         "selector": "0xeaf1248a"
+      },
+      {
+        "args": [
+          {
+            "label": "role",
+            "type": {
+              "displayName": [
+                "accesscontrol_external",
+                "RevokeRoleInput1"
+              ],
+              "type": 3
+            }
+          },
+          {
+            "label": "account",
+            "type": {
+              "displayName": [
+                "accesscontrol_external",
+                "RevokeRoleInput2"
+              ],
+              "type": 57
+            }
+          }
+        ],
+        "default": false,
+        "docs": [],
+        "label": "AccessControl::revoke_role",
+        "mutates": true,
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "ink",
+            "MessageResult"
+          ],
+          "type": 23
+        },
+        "selector": "0x6e4f0991"
       },
       {
         "args": [
@@ -1198,7 +1024,7 @@
                 "upgradeable_external",
                 "SetCodeHashInput1"
               ],
-              "type": 56
+              "type": 49
             }
           }
         ],
@@ -1212,7 +1038,7 @@
             "ink",
             "MessageResult"
           ],
-          "type": 62
+          "type": 59
         },
         "selector": "0x1700ae80"
       }
@@ -1431,7 +1257,7 @@
                           "ty": 3
                         }
                       },
-                      "name": "current_raffle_id"
+                      "name": "draw_number"
                     },
                     {
                       "layout": {
@@ -1445,17 +1271,21 @@
                             },
                             "1": {
                               "fields": [],
-                              "name": "Ongoing"
+                              "name": "Started"
                             },
                             "2": {
                               "fields": [],
-                              "name": "WaitingResults"
+                              "name": "RegistrationsOpen"
                             },
                             "3": {
                               "fields": [],
-                              "name": "WaitingWinners"
+                              "name": "RegistrationsClosed"
                             },
                             "4": {
+                              "fields": [],
+                              "name": "WaitingWinners"
+                            },
+                            "5": {
                               "fields": [],
                               "name": "Closed"
                             }
@@ -1466,14 +1296,63 @@
                     },
                     {
                       "layout": {
+                        "leaf": {
+                          "key": "0x00000000",
+                          "ty": 8
+                        }
+                      },
+                      "name": "registration_contracts"
+                    },
+                    {
+                      "layout": {
+                        "root": {
+                          "layout": {
+                            "enum": {
+                              "dispatchKey": "0x9c285d71",
+                              "name": "Status",
+                              "variants": {
+                                "0": {
+                                  "fields": [],
+                                  "name": "NotStarted"
+                                },
+                                "1": {
+                                  "fields": [],
+                                  "name": "Started"
+                                },
+                                "2": {
+                                  "fields": [],
+                                  "name": "RegistrationsOpen"
+                                },
+                                "3": {
+                                  "fields": [],
+                                  "name": "RegistrationsClosed"
+                                },
+                                "4": {
+                                  "fields": [],
+                                  "name": "WaitingWinners"
+                                },
+                                "5": {
+                                  "fields": [],
+                                  "name": "Closed"
+                                }
+                              }
+                            }
+                          },
+                          "root_key": "0x9c285d71"
+                        }
+                      },
+                      "name": "registration_contracts_status"
+                    },
+                    {
+                      "layout": {
                         "root": {
                           "layout": {
                             "leaf": {
-                              "key": "0x1d32f93c",
-                              "ty": 8
+                              "key": "0x11d76d85",
+                              "ty": 9
                             }
                           },
-                          "root_key": "0x1d32f93c"
+                          "root_key": "0x11d76d85"
                         }
                       },
                       "name": "results"
@@ -1483,11 +1362,11 @@
                         "root": {
                           "layout": {
                             "leaf": {
-                              "key": "0x3d8da523",
-                              "ty": 9
+                              "key": "0x3f8ee6b5",
+                              "ty": 10
                             }
                           },
-                          "root_key": "0x3d8da523"
+                          "root_key": "0x3f8ee6b5"
                         }
                       },
                       "name": "winners"
@@ -1496,40 +1375,16 @@
                   "name": "Data"
                 }
               },
-              "name": "lotto"
+              "name": "raffle_manager"
             },
             {
               "layout": {
-                "struct": {
-                  "fields": [
-                    {
-                      "layout": {
-                        "root": {
-                          "layout": {
-                            "leaf": {
-                              "key": "0x8646ffc8",
-                              "ty": 6
-                            }
-                          },
-                          "root_key": "0x8646ffc8"
-                        }
-                      },
-                      "name": "pending_rewards"
-                    },
-                    {
-                      "layout": {
-                        "leaf": {
-                          "key": "0x00000000",
-                          "ty": 6
-                        }
-                      },
-                      "name": "total_pending_rewards"
-                    }
-                  ],
-                  "name": "Data"
+                "leaf": {
+                  "key": "0x00000000",
+                  "ty": 3
                 }
               },
-              "name": "reward"
+              "name": "block_number_close_registrations"
             }
           ],
           "name": "Contract"
@@ -1625,7 +1480,7 @@
       "type": {
         "def": {
           "sequence": {
-            "type": 7
+            "type": 6
           }
         }
       }
@@ -1635,13 +1490,23 @@
       "type": {
         "def": {
           "sequence": {
-            "type": 0
+            "type": 7
           }
         }
       }
     },
     {
       "id": 10,
+      "type": {
+        "def": {
+          "sequence": {
+            "type": 0
+          }
+        }
+      }
+    },
+    {
+      "id": 11,
       "type": {
         "def": {
           "variant": {
@@ -1658,7 +1523,7 @@
               {
                 "fields": [
                   {
-                    "type": 11
+                    "type": 12
                   }
                 ],
                 "index": 1,
@@ -1674,7 +1539,7 @@
           },
           {
             "name": "E",
-            "type": 11
+            "type": 12
           }
         ],
         "path": [
@@ -1683,7 +1548,7 @@
       }
     },
     {
-      "id": 11,
+      "id": 12,
       "type": {
         "def": {
           "variant": {
@@ -1702,311 +1567,7 @@
       }
     },
     {
-      "id": 12,
-      "type": {
-        "def": {
-          "variant": {
-            "variants": [
-              {
-                "fields": [
-                  {
-                    "type": 13
-                  }
-                ],
-                "index": 0,
-                "name": "Ok"
-              },
-              {
-                "fields": [
-                  {
-                    "type": 11
-                  }
-                ],
-                "index": 1,
-                "name": "Err"
-              }
-            ]
-          }
-        },
-        "params": [
-          {
-            "name": "T",
-            "type": 13
-          },
-          {
-            "name": "E",
-            "type": 11
-          }
-        ],
-        "path": [
-          "Result"
-        ]
-      }
-    },
-    {
       "id": 13,
-      "type": {
-        "def": {
-          "variant": {
-            "variants": [
-              {
-                "fields": [
-                  {
-                    "type": 4
-                  }
-                ],
-                "index": 0,
-                "name": "Ok"
-              },
-              {
-                "fields": [
-                  {
-                    "type": 14
-                  }
-                ],
-                "index": 1,
-                "name": "Err"
-              }
-            ]
-          }
-        },
-        "params": [
-          {
-            "name": "T",
-            "type": 4
-          },
-          {
-            "name": "E",
-            "type": 14
-          }
-        ],
-        "path": [
-          "Result"
-        ]
-      }
-    },
-    {
-      "id": 14,
-      "type": {
-        "def": {
-          "variant": {
-            "variants": [
-              {
-                "fields": [
-                  {
-                    "type": 15,
-                    "typeName": "AccessControlError"
-                  }
-                ],
-                "index": 0,
-                "name": "AccessControlError"
-              },
-              {
-                "fields": [
-                  {
-                    "type": 16,
-                    "typeName": "RaffleError"
-                  }
-                ],
-                "index": 1,
-                "name": "RaffleError"
-              },
-              {
-                "fields": [
-                  {
-                    "type": 17,
-                    "typeName": "RollupAnchorError"
-                  }
-                ],
-                "index": 2,
-                "name": "RollupAnchorError"
-              },
-              {
-                "index": 3,
-                "name": "TransferError"
-              }
-            ]
-          }
-        },
-        "path": [
-          "lotto_contract",
-          "lotto_contract",
-          "ContractError"
-        ]
-      }
-    },
-    {
-      "id": 15,
-      "type": {
-        "def": {
-          "variant": {
-            "variants": [
-              {
-                "index": 0,
-                "name": "InvalidCaller"
-              },
-              {
-                "index": 1,
-                "name": "MissingRole"
-              },
-              {
-                "index": 2,
-                "name": "RoleRedundant"
-              }
-            ]
-          }
-        },
-        "path": [
-          "openbrush_contracts",
-          "traits",
-          "errors",
-          "access_control",
-          "AccessControlError"
-        ]
-      }
-    },
-    {
-      "id": 16,
-      "type": {
-        "def": {
-          "variant": {
-            "variants": [
-              {
-                "fields": [
-                  {
-                    "type": 15,
-                    "typeName": "AccessControlError"
-                  }
-                ],
-                "index": 0,
-                "name": "AccessControlError"
-              },
-              {
-                "index": 1,
-                "name": "IncorrectRaffle"
-              },
-              {
-                "index": 2,
-                "name": "IncorrectStatus"
-              },
-              {
-                "index": 3,
-                "name": "IncorrectConfig"
-              },
-              {
-                "index": 4,
-                "name": "ConfigNotSet"
-              },
-              {
-                "index": 5,
-                "name": "DifferentConfig"
-              },
-              {
-                "index": 6,
-                "name": "IncorrectNbNumbers"
-              },
-              {
-                "index": 7,
-                "name": "IncorrectNumbers"
-              },
-              {
-                "index": 8,
-                "name": "DifferentResults"
-              },
-              {
-                "index": 9,
-                "name": "ExistingResults"
-              },
-              {
-                "index": 10,
-                "name": "ExistingWinners"
-              },
-              {
-                "index": 11,
-                "name": "TransferError"
-              },
-              {
-                "index": 12,
-                "name": "AddOverFlow"
-              },
-              {
-                "index": 13,
-                "name": "SubOverFlow"
-              },
-              {
-                "index": 14,
-                "name": "DivByZero"
-              },
-              {
-                "index": 15,
-                "name": "NoReward"
-              }
-            ]
-          }
-        },
-        "path": [
-          "lotto",
-          "traits",
-          "error",
-          "RaffleError"
-        ]
-      }
-    },
-    {
-      "id": 17,
-      "type": {
-        "def": {
-          "variant": {
-            "variants": [
-              {
-                "index": 0,
-                "name": "InvalidPopTarget"
-              },
-              {
-                "index": 1,
-                "name": "ConditionNotMet"
-              },
-              {
-                "index": 2,
-                "name": "FailedToDecode"
-              },
-              {
-                "index": 3,
-                "name": "UnsupportedAction"
-              },
-              {
-                "fields": [
-                  {
-                    "type": 15,
-                    "typeName": "AccessControlError"
-                  }
-                ],
-                "index": 4,
-                "name": "AccessControlError"
-              }
-            ]
-          }
-        },
-        "path": [
-          "phat_rollup_anchor_ink",
-          "traits",
-          "rollup_anchor",
-          "RollupAnchorError"
-        ]
-      }
-    },
-    {
-      "id": 18,
-      "type": {
-        "def": {
-          "sequence": {
-            "type": 8
-          }
-        }
-      }
-    },
-    {
-      "id": 19,
       "type": {
         "def": {
           "composite": {
@@ -2031,14 +1592,13 @@
         },
         "path": [
           "lotto",
-          "traits",
           "config",
           "Config"
         ]
       }
     },
     {
-      "id": 20,
+      "id": 14,
       "type": {
         "def": {
           "variant": {
@@ -2046,7 +1606,7 @@
               {
                 "fields": [
                   {
-                    "type": 21
+                    "type": 15
                   }
                 ],
                 "index": 0,
@@ -2055,7 +1615,7 @@
               {
                 "fields": [
                   {
-                    "type": 11
+                    "type": 12
                   }
                 ],
                 "index": 1,
@@ -2067,11 +1627,11 @@
         "params": [
           {
             "name": "T",
-            "type": 21
+            "type": 15
           },
           {
             "name": "E",
-            "type": 11
+            "type": 12
           }
         ],
         "path": [
@@ -2080,7 +1640,7 @@
       }
     },
     {
-      "id": 21,
+      "id": 15,
       "type": {
         "def": {
           "variant": {
@@ -2122,7 +1682,7 @@
       }
     },
     {
-      "id": 22,
+      "id": 16,
       "type": {
         "def": {
           "variant": {
@@ -2130,7 +1690,235 @@
               {
                 "fields": [
                   {
-                    "type": 23
+                    "type": 17,
+                    "typeName": "AccessControlError"
+                  }
+                ],
+                "index": 0,
+                "name": "AccessControlError"
+              },
+              {
+                "fields": [
+                  {
+                    "type": 18,
+                    "typeName": "RaffleError"
+                  }
+                ],
+                "index": 1,
+                "name": "RaffleError"
+              },
+              {
+                "fields": [
+                  {
+                    "type": 19,
+                    "typeName": "RollupAnchorError"
+                  }
+                ],
+                "index": 2,
+                "name": "RollupAnchorError"
+              },
+              {
+                "index": 3,
+                "name": "CannotBeClosedYet"
+              },
+              {
+                "index": 4,
+                "name": "NoResult"
+              },
+              {
+                "index": 5,
+                "name": "TransferError"
+              }
+            ]
+          }
+        },
+        "path": [
+          "lotto_registration_manager_contract",
+          "lotto_registration_manager_contract",
+          "ContractError"
+        ]
+      }
+    },
+    {
+      "id": 17,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "index": 0,
+                "name": "InvalidCaller"
+              },
+              {
+                "index": 1,
+                "name": "MissingRole"
+              },
+              {
+                "index": 2,
+                "name": "RoleRedundant"
+              }
+            ]
+          }
+        },
+        "path": [
+          "openbrush_contracts",
+          "traits",
+          "errors",
+          "access_control",
+          "AccessControlError"
+        ]
+      }
+    },
+    {
+      "id": 18,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "index": 0,
+                "name": "IncorrectDrawNumber"
+              },
+              {
+                "index": 1,
+                "name": "IncorrectStatus"
+              },
+              {
+                "index": 2,
+                "name": "IncorrectConfig"
+              },
+              {
+                "index": 3,
+                "name": "ConfigNotSet"
+              },
+              {
+                "index": 4,
+                "name": "DifferentConfig"
+              },
+              {
+                "index": 5,
+                "name": "IncorrectNbNumbers"
+              },
+              {
+                "index": 6,
+                "name": "IncorrectNumbers"
+              },
+              {
+                "index": 7,
+                "name": "DifferentResults"
+              },
+              {
+                "index": 8,
+                "name": "ExistingResults"
+              },
+              {
+                "index": 9,
+                "name": "ExistingWinners"
+              },
+              {
+                "index": 10,
+                "name": "AddOverFlow"
+              },
+              {
+                "index": 11,
+                "name": "FailedToDecode"
+              }
+            ]
+          }
+        },
+        "path": [
+          "lotto",
+          "error",
+          "RaffleError"
+        ]
+      }
+    },
+    {
+      "id": 19,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "index": 0,
+                "name": "InvalidPopTarget"
+              },
+              {
+                "index": 1,
+                "name": "ConditionNotMet"
+              },
+              {
+                "index": 2,
+                "name": "FailedToDecode"
+              },
+              {
+                "index": 3,
+                "name": "UnsupportedAction"
+              },
+              {
+                "fields": [
+                  {
+                    "type": 17,
+                    "typeName": "AccessControlError"
+                  }
+                ],
+                "index": 4,
+                "name": "AccessControlError"
+              }
+            ]
+          }
+        },
+        "path": [
+          "phat_rollup_anchor_ink",
+          "traits",
+          "rollup_anchor",
+          "RollupAnchorError"
+        ]
+      }
+    },
+    {
+      "id": 20,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "index": 0,
+                "name": "None"
+              },
+              {
+                "fields": [
+                  {
+                    "type": 3
+                  }
+                ],
+                "index": 1,
+                "name": "Some"
+              }
+            ]
+          }
+        },
+        "params": [
+          {
+            "name": "T",
+            "type": 3
+          }
+        ],
+        "path": [
+          "Option"
+        ]
+      }
+    },
+    {
+      "id": 21,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "fields": [
+                  {
+                    "type": 22
                   }
                 ],
                 "index": 0,
@@ -2139,7 +1927,7 @@
               {
                 "fields": [
                   {
-                    "type": 11
+                    "type": 12
                   }
                 ],
                 "index": 1,
@@ -2151,16 +1939,24 @@
         "params": [
           {
             "name": "T",
-            "type": 23
+            "type": 22
           },
           {
             "name": "E",
-            "type": 11
+            "type": 12
           }
         ],
         "path": [
           "Result"
         ]
+      }
+    },
+    {
+      "id": 22,
+      "type": {
+        "def": {
+          "primitive": "bool"
+        }
       }
     },
     {
@@ -2172,7 +1968,7 @@
               {
                 "fields": [
                   {
-                    "type": 3
+                    "type": 24
                   }
                 ],
                 "index": 0,
@@ -2181,7 +1977,7 @@
               {
                 "fields": [
                   {
-                    "type": 14
+                    "type": 12
                   }
                 ],
                 "index": 1,
@@ -2193,11 +1989,11 @@
         "params": [
           {
             "name": "T",
-            "type": 3
+            "type": 24
           },
           {
             "name": "E",
-            "type": 14
+            "type": 12
           }
         ],
         "path": [
@@ -2214,7 +2010,7 @@
               {
                 "fields": [
                   {
-                    "type": 25
+                    "type": 4
                   }
                 ],
                 "index": 0,
@@ -2223,7 +2019,7 @@
               {
                 "fields": [
                   {
-                    "type": 11
+                    "type": 17
                   }
                 ],
                 "index": 1,
@@ -2235,11 +2031,11 @@
         "params": [
           {
             "name": "T",
-            "type": 25
+            "type": 4
           },
           {
             "name": "E",
-            "type": 11
+            "type": 17
           }
         ],
         "path": [
@@ -2256,7 +2052,7 @@
               {
                 "fields": [
                   {
-                    "type": 4
+                    "type": 3
                   }
                 ],
                 "index": 0,
@@ -2265,7 +2061,7 @@
               {
                 "fields": [
                   {
-                    "type": 15
+                    "type": 12
                   }
                 ],
                 "index": 1,
@@ -2277,11 +2073,11 @@
         "params": [
           {
             "name": "T",
-            "type": 4
+            "type": 3
           },
           {
             "name": "E",
-            "type": 15
+            "type": 12
           }
         ],
         "path": [
@@ -2298,7 +2094,7 @@
               {
                 "fields": [
                   {
-                    "type": 3
+                    "type": 27
                   }
                 ],
                 "index": 0,
@@ -2307,7 +2103,7 @@
               {
                 "fields": [
                   {
-                    "type": 11
+                    "type": 12
                   }
                 ],
                 "index": 1,
@@ -2319,11 +2115,11 @@
         "params": [
           {
             "name": "T",
-            "type": 3
+            "type": 27
           },
           {
             "name": "E",
-            "type": 11
+            "type": 12
           }
         ],
         "path": [
@@ -2338,55 +2134,13 @@
           "variant": {
             "variants": [
               {
-                "fields": [
-                  {
-                    "type": 28
-                  }
-                ],
-                "index": 0,
-                "name": "Ok"
-              },
-              {
-                "fields": [
-                  {
-                    "type": 11
-                  }
-                ],
-                "index": 1,
-                "name": "Err"
-              }
-            ]
-          }
-        },
-        "params": [
-          {
-            "name": "T",
-            "type": 28
-          },
-          {
-            "name": "E",
-            "type": 11
-          }
-        ],
-        "path": [
-          "Result"
-        ]
-      }
-    },
-    {
-      "id": 28,
-      "type": {
-        "def": {
-          "variant": {
-            "variants": [
-              {
                 "index": 0,
                 "name": "None"
               },
               {
                 "fields": [
                   {
-                    "type": 19
+                    "type": 13
                   }
                 ],
                 "index": 1,
@@ -2398,7 +2152,7 @@
         "params": [
           {
             "name": "T",
-            "type": 19
+            "type": 13
           }
         ],
         "path": [
@@ -2407,7 +2161,7 @@
       }
     },
     {
-      "id": 29,
+      "id": 28,
       "type": {
         "def": {
           "variant": {
@@ -2415,7 +2169,7 @@
               {
                 "fields": [
                   {
-                    "type": 30
+                    "type": 29
                   }
                 ],
                 "index": 0,
@@ -2424,7 +2178,7 @@
               {
                 "fields": [
                   {
-                    "type": 11
+                    "type": 12
                   }
                 ],
                 "index": 1,
@@ -2436,11 +2190,11 @@
         "params": [
           {
             "name": "T",
-            "type": 30
+            "type": 29
           },
           {
             "name": "E",
-            "type": 11
+            "type": 12
           }
         ],
         "path": [
@@ -2449,7 +2203,7 @@
       }
     },
     {
-      "id": 30,
+      "id": 29,
       "type": {
         "def": {
           "variant": {
@@ -2460,18 +2214,22 @@
               },
               {
                 "index": 1,
-                "name": "Ongoing"
+                "name": "Started"
               },
               {
                 "index": 2,
-                "name": "WaitingResults"
+                "name": "RegistrationsOpen"
               },
               {
                 "index": 3,
-                "name": "WaitingWinners"
+                "name": "RegistrationsClosed"
               },
               {
                 "index": 4,
+                "name": "WaitingWinners"
+              },
+              {
+                "index": 5,
                 "name": "Closed"
               }
             ]
@@ -2479,9 +2237,50 @@
         },
         "path": [
           "lotto",
-          "traits",
-          "raffle",
+          "raffle_manager",
           "Status"
+        ]
+      }
+    },
+    {
+      "id": 30,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "fields": [
+                  {
+                    "type": 8
+                  }
+                ],
+                "index": 0,
+                "name": "Ok"
+              },
+              {
+                "fields": [
+                  {
+                    "type": 12
+                  }
+                ],
+                "index": 1,
+                "name": "Err"
+              }
+            ]
+          }
+        },
+        "params": [
+          {
+            "name": "T",
+            "type": 8
+          },
+          {
+            "name": "E",
+            "type": 12
+          }
+        ],
+        "path": [
+          "Result"
         ]
       }
     },
@@ -2503,7 +2302,7 @@
               {
                 "fields": [
                   {
-                    "type": 11
+                    "type": 12
                   }
                 ],
                 "index": 1,
@@ -2519,7 +2318,7 @@
           },
           {
             "name": "E",
-            "type": 11
+            "type": 12
           }
         ],
         "path": [
@@ -2529,6 +2328,81 @@
     },
     {
       "id": 32,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "index": 0,
+                "name": "None"
+              },
+              {
+                "fields": [
+                  {
+                    "type": 10
+                  }
+                ],
+                "index": 1,
+                "name": "Some"
+              }
+            ]
+          }
+        },
+        "params": [
+          {
+            "name": "T",
+            "type": 10
+          }
+        ],
+        "path": [
+          "Option"
+        ]
+      }
+    },
+    {
+      "id": 33,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "fields": [
+                  {
+                    "type": 34
+                  }
+                ],
+                "index": 0,
+                "name": "Ok"
+              },
+              {
+                "fields": [
+                  {
+                    "type": 12
+                  }
+                ],
+                "index": 1,
+                "name": "Err"
+              }
+            ]
+          }
+        },
+        "params": [
+          {
+            "name": "T",
+            "type": 34
+          },
+          {
+            "name": "E",
+            "type": 12
+          }
+        ],
+        "path": [
+          "Result"
+        ]
+      }
+    },
+    {
+      "id": 34,
       "type": {
         "def": {
           "variant": {
@@ -2561,81 +2435,6 @@
       }
     },
     {
-      "id": 33,
-      "type": {
-        "def": {
-          "variant": {
-            "variants": [
-              {
-                "fields": [
-                  {
-                    "type": 34
-                  }
-                ],
-                "index": 0,
-                "name": "Ok"
-              },
-              {
-                "fields": [
-                  {
-                    "type": 11
-                  }
-                ],
-                "index": 1,
-                "name": "Err"
-              }
-            ]
-          }
-        },
-        "params": [
-          {
-            "name": "T",
-            "type": 34
-          },
-          {
-            "name": "E",
-            "type": 11
-          }
-        ],
-        "path": [
-          "Result"
-        ]
-      }
-    },
-    {
-      "id": 34,
-      "type": {
-        "def": {
-          "variant": {
-            "variants": [
-              {
-                "index": 0,
-                "name": "None"
-              },
-              {
-                "fields": [
-                  {
-                    "type": 8
-                  }
-                ],
-                "index": 1,
-                "name": "Some"
-              }
-            ]
-          }
-        },
-        "params": [
-          {
-            "name": "T",
-            "type": 8
-          }
-        ],
-        "path": [
-          "Option"
-        ]
-      }
-    },
-    {
       "id": 35,
       "type": {
         "def": {
@@ -2644,7 +2443,7 @@
               {
                 "fields": [
                   {
-                    "type": 6
+                    "type": 36
                   }
                 ],
                 "index": 0,
@@ -2653,7 +2452,7 @@
               {
                 "fields": [
                   {
-                    "type": 11
+                    "type": 12
                   }
                 ],
                 "index": 1,
@@ -2665,11 +2464,11 @@
         "params": [
           {
             "name": "T",
-            "type": 6
+            "type": 36
           },
           {
             "name": "E",
-            "type": 11
+            "type": 12
           }
         ],
         "path": [
@@ -2684,105 +2483,13 @@
           "variant": {
             "variants": [
               {
-                "fields": [
-                  {
-                    "type": 37
-                  }
-                ],
-                "index": 0,
-                "name": "Ok"
-              },
-              {
-                "fields": [
-                  {
-                    "type": 11
-                  }
-                ],
-                "index": 1,
-                "name": "Err"
-              }
-            ]
-          }
-        },
-        "params": [
-          {
-            "name": "T",
-            "type": 37
-          },
-          {
-            "name": "E",
-            "type": 11
-          }
-        ],
-        "path": [
-          "Result"
-        ]
-      }
-    },
-    {
-      "id": 37,
-      "type": {
-        "def": {
-          "primitive": "bool"
-        }
-      }
-    },
-    {
-      "id": 38,
-      "type": {
-        "def": {
-          "variant": {
-            "variants": [
-              {
-                "fields": [
-                  {
-                    "type": 39
-                  }
-                ],
-                "index": 0,
-                "name": "Ok"
-              },
-              {
-                "fields": [
-                  {
-                    "type": 11
-                  }
-                ],
-                "index": 1,
-                "name": "Err"
-              }
-            ]
-          }
-        },
-        "params": [
-          {
-            "name": "T",
-            "type": 39
-          },
-          {
-            "name": "E",
-            "type": 11
-          }
-        ],
-        "path": [
-          "Result"
-        ]
-      }
-    },
-    {
-      "id": 39,
-      "type": {
-        "def": {
-          "variant": {
-            "variants": [
-              {
                 "index": 0,
                 "name": "None"
               },
               {
                 "fields": [
                   {
-                    "type": 6
+                    "type": 29
                   }
                 ],
                 "index": 1,
@@ -2794,7 +2501,7 @@
         "params": [
           {
             "name": "T",
-            "type": 6
+            "type": 29
           }
         ],
         "path": [
@@ -2803,28 +2510,49 @@
       }
     },
     {
-      "id": 40,
+      "id": 37,
       "type": {
         "def": {
-          "sequence": {
-            "type": 41
+          "variant": {
+            "variants": [
+              {
+                "fields": [
+                  {
+                    "type": 38
+                  }
+                ],
+                "index": 0,
+                "name": "Ok"
+              },
+              {
+                "fields": [
+                  {
+                    "type": 12
+                  }
+                ],
+                "index": 1,
+                "name": "Err"
+              }
+            ]
           }
-        }
+        },
+        "params": [
+          {
+            "name": "T",
+            "type": 38
+          },
+          {
+            "name": "E",
+            "type": 12
+          }
+        ],
+        "path": [
+          "Result"
+        ]
       }
     },
     {
-      "id": 41,
-      "type": {
-        "def": {
-          "tuple": [
-            5,
-            42
-          ]
-        }
-      }
-    },
-    {
-      "id": 42,
+      "id": 38,
       "type": {
         "def": {
           "variant": {
@@ -2857,17 +2585,38 @@
       }
     },
     {
-      "id": 43,
+      "id": 39,
       "type": {
         "def": {
           "sequence": {
-            "type": 44
+            "type": 40
           }
         }
       }
     },
     {
-      "id": 44,
+      "id": 40,
+      "type": {
+        "def": {
+          "tuple": [
+            5,
+            38
+          ]
+        }
+      }
+    },
+    {
+      "id": 41,
+      "type": {
+        "def": {
+          "sequence": {
+            "type": 42
+          }
+        }
+      }
+    },
+    {
+      "id": 42,
       "type": {
         "def": {
           "variant": {
@@ -2924,6 +2673,90 @@
       }
     },
     {
+      "id": 43,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "fields": [
+                  {
+                    "type": 44
+                  }
+                ],
+                "index": 0,
+                "name": "Ok"
+              },
+              {
+                "fields": [
+                  {
+                    "type": 12
+                  }
+                ],
+                "index": 1,
+                "name": "Err"
+              }
+            ]
+          }
+        },
+        "params": [
+          {
+            "name": "T",
+            "type": 44
+          },
+          {
+            "name": "E",
+            "type": 12
+          }
+        ],
+        "path": [
+          "Result"
+        ]
+      }
+    },
+    {
+      "id": 44,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "fields": [
+                  {
+                    "type": 4
+                  }
+                ],
+                "index": 0,
+                "name": "Ok"
+              },
+              {
+                "fields": [
+                  {
+                    "type": 19
+                  }
+                ],
+                "index": 1,
+                "name": "Err"
+              }
+            ]
+          }
+        },
+        "params": [
+          {
+            "name": "T",
+            "type": 4
+          },
+          {
+            "name": "E",
+            "type": 19
+          }
+        ],
+        "path": [
+          "Result"
+        ]
+      }
+    },
+    {
       "id": 45,
       "type": {
         "def": {
@@ -2941,7 +2774,7 @@
               {
                 "fields": [
                   {
-                    "type": 11
+                    "type": 12
                   }
                 ],
                 "index": 1,
@@ -2957,7 +2790,7 @@
           },
           {
             "name": "E",
-            "type": 11
+            "type": 12
           }
         ],
         "path": [
@@ -2974,7 +2807,7 @@
               {
                 "fields": [
                   {
-                    "type": 4
+                    "type": 47
                   }
                 ],
                 "index": 0,
@@ -2983,7 +2816,7 @@
               {
                 "fields": [
                   {
-                    "type": 17
+                    "type": 50
                   }
                 ],
                 "index": 1,
@@ -2995,11 +2828,11 @@
         "params": [
           {
             "name": "T",
-            "type": 4
+            "type": 47
           },
           {
             "name": "E",
-            "type": 17
+            "type": 50
           }
         ],
         "path": [
@@ -3011,42 +2844,11 @@
       "id": 47,
       "type": {
         "def": {
-          "variant": {
-            "variants": [
-              {
-                "fields": [
-                  {
-                    "type": 42
-                  }
-                ],
-                "index": 0,
-                "name": "Ok"
-              },
-              {
-                "fields": [
-                  {
-                    "type": 11
-                  }
-                ],
-                "index": 1,
-                "name": "Err"
-              }
-            ]
-          }
-        },
-        "params": [
-          {
-            "name": "T",
-            "type": 42
-          },
-          {
-            "name": "E",
-            "type": 11
-          }
-        ],
-        "path": [
-          "Result"
-        ]
+          "tuple": [
+            48,
+            49
+          ]
+        }
       }
     },
     {
@@ -3090,99 +2892,24 @@
       "id": 49,
       "type": {
         "def": {
-          "array": {
-            "len": 65,
-            "type": 2
+          "composite": {
+            "fields": [
+              {
+                "type": 1,
+                "typeName": "[u8; 32]"
+              }
+            ]
           }
-        }
+        },
+        "path": [
+          "ink_primitives",
+          "types",
+          "Hash"
+        ]
       }
     },
     {
       "id": 50,
-      "type": {
-        "def": {
-          "variant": {
-            "variants": [
-              {
-                "fields": [
-                  {
-                    "type": 51
-                  }
-                ],
-                "index": 0,
-                "name": "Ok"
-              },
-              {
-                "fields": [
-                  {
-                    "type": 11
-                  }
-                ],
-                "index": 1,
-                "name": "Err"
-              }
-            ]
-          }
-        },
-        "params": [
-          {
-            "name": "T",
-            "type": 51
-          },
-          {
-            "name": "E",
-            "type": 11
-          }
-        ],
-        "path": [
-          "Result"
-        ]
-      }
-    },
-    {
-      "id": 51,
-      "type": {
-        "def": {
-          "variant": {
-            "variants": [
-              {
-                "fields": [
-                  {
-                    "type": 4
-                  }
-                ],
-                "index": 0,
-                "name": "Ok"
-              },
-              {
-                "fields": [
-                  {
-                    "type": 52
-                  }
-                ],
-                "index": 1,
-                "name": "Err"
-              }
-            ]
-          }
-        },
-        "params": [
-          {
-            "name": "T",
-            "type": 4
-          },
-          {
-            "name": "E",
-            "type": 52
-          }
-        ],
-        "path": [
-          "Result"
-        ]
-      }
-    },
-    {
-      "id": 52,
       "type": {
         "def": {
           "variant": {
@@ -3210,7 +2937,7 @@
               {
                 "fields": [
                   {
-                    "type": 17,
+                    "type": 19,
                     "typeName": "RollupAnchorError"
                   }
                 ],
@@ -3229,7 +2956,18 @@
       }
     },
     {
-      "id": 53,
+      "id": 51,
+      "type": {
+        "def": {
+          "array": {
+            "len": 65,
+            "type": 2
+          }
+        }
+      }
+    },
+    {
+      "id": 52,
       "type": {
         "def": {
           "variant": {
@@ -3237,7 +2975,7 @@
               {
                 "fields": [
                   {
-                    "type": 54
+                    "type": 53
                   }
                 ],
                 "index": 0,
@@ -3246,7 +2984,7 @@
               {
                 "fields": [
                   {
-                    "type": 11
+                    "type": 12
                   }
                 ],
                 "index": 1,
@@ -3258,11 +2996,53 @@
         "params": [
           {
             "name": "T",
-            "type": 54
+            "type": 53
           },
           {
             "name": "E",
-            "type": 11
+            "type": 12
+          }
+        ],
+        "path": [
+          "Result"
+        ]
+      }
+    },
+    {
+      "id": 53,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "fields": [
+                  {
+                    "type": 4
+                  }
+                ],
+                "index": 0,
+                "name": "Ok"
+              },
+              {
+                "fields": [
+                  {
+                    "type": 50
+                  }
+                ],
+                "index": 1,
+                "name": "Err"
+              }
+            ]
+          }
+        },
+        "params": [
+          {
+            "name": "T",
+            "type": 4
+          },
+          {
+            "name": "E",
+            "type": 50
           }
         ],
         "path": [
@@ -3288,7 +3068,7 @@
               {
                 "fields": [
                   {
-                    "type": 52
+                    "type": 12
                   }
                 ],
                 "index": 1,
@@ -3304,7 +3084,7 @@
           },
           {
             "name": "E",
-            "type": 52
+            "type": 12
           }
         ],
         "path": [
@@ -3316,30 +3096,67 @@
       "id": 55,
       "type": {
         "def": {
-          "tuple": [
-            48,
-            56
-          ]
-        }
+          "variant": {
+            "variants": [
+              {
+                "fields": [
+                  {
+                    "type": 4
+                  }
+                ],
+                "index": 0,
+                "name": "Ok"
+              },
+              {
+                "fields": [
+                  {
+                    "type": 56
+                  }
+                ],
+                "index": 1,
+                "name": "Err"
+              }
+            ]
+          }
+        },
+        "params": [
+          {
+            "name": "T",
+            "type": 4
+          },
+          {
+            "name": "E",
+            "type": 56
+          }
+        ],
+        "path": [
+          "Result"
+        ]
       }
     },
     {
       "id": 56,
       "type": {
         "def": {
-          "composite": {
-            "fields": [
+          "variant": {
+            "variants": [
               {
-                "type": 1,
-                "typeName": "[u8; 32]"
+                "index": 0,
+                "name": "CallerIsNotOwner"
+              },
+              {
+                "index": 1,
+                "name": "NewOwnerIsNotSet"
               }
             ]
           }
         },
         "path": [
-          "ink_primitives",
-          "types",
-          "Hash"
+          "openbrush_contracts",
+          "traits",
+          "errors",
+          "ownable",
+          "OwnableError"
         ]
       }
     },
@@ -3385,7 +3202,7 @@
               {
                 "fields": [
                   {
-                    "type": 59
+                    "type": 57
                   }
                 ],
                 "index": 0,
@@ -3394,7 +3211,7 @@
               {
                 "fields": [
                   {
-                    "type": 11
+                    "type": 12
                   }
                 ],
                 "index": 1,
@@ -3406,11 +3223,11 @@
         "params": [
           {
             "name": "T",
-            "type": 59
+            "type": 57
           },
           {
             "name": "E",
-            "type": 11
+            "type": 12
           }
         ],
         "path": [
@@ -3427,7 +3244,7 @@
               {
                 "fields": [
                   {
-                    "type": 4
+                    "type": 60
                   }
                 ],
                 "index": 0,
@@ -3436,7 +3253,7 @@
               {
                 "fields": [
                   {
-                    "type": 60
+                    "type": 12
                   }
                 ],
                 "index": 1,
@@ -3448,11 +3265,11 @@
         "params": [
           {
             "name": "T",
-            "type": 4
+            "type": 60
           },
           {
             "name": "E",
-            "type": 60
+            "type": 12
           }
         ],
         "path": [
@@ -3467,116 +3284,6 @@
           "variant": {
             "variants": [
               {
-                "index": 0,
-                "name": "CallerIsNotOwner"
-              },
-              {
-                "index": 1,
-                "name": "NewOwnerIsNotSet"
-              }
-            ]
-          }
-        },
-        "path": [
-          "openbrush_contracts",
-          "traits",
-          "errors",
-          "ownable",
-          "OwnableError"
-        ]
-      }
-    },
-    {
-      "id": 61,
-      "type": {
-        "def": {
-          "variant": {
-            "variants": [
-              {
-                "fields": [
-                  {
-                    "type": 57
-                  }
-                ],
-                "index": 0,
-                "name": "Ok"
-              },
-              {
-                "fields": [
-                  {
-                    "type": 11
-                  }
-                ],
-                "index": 1,
-                "name": "Err"
-              }
-            ]
-          }
-        },
-        "params": [
-          {
-            "name": "T",
-            "type": 57
-          },
-          {
-            "name": "E",
-            "type": 11
-          }
-        ],
-        "path": [
-          "Result"
-        ]
-      }
-    },
-    {
-      "id": 62,
-      "type": {
-        "def": {
-          "variant": {
-            "variants": [
-              {
-                "fields": [
-                  {
-                    "type": 63
-                  }
-                ],
-                "index": 0,
-                "name": "Ok"
-              },
-              {
-                "fields": [
-                  {
-                    "type": 11
-                  }
-                ],
-                "index": 1,
-                "name": "Err"
-              }
-            ]
-          }
-        },
-        "params": [
-          {
-            "name": "T",
-            "type": 63
-          },
-          {
-            "name": "E",
-            "type": 11
-          }
-        ],
-        "path": [
-          "Result"
-        ]
-      }
-    },
-    {
-      "id": 63,
-      "type": {
-        "def": {
-          "variant": {
-            "variants": [
-              {
                 "fields": [
                   {
                     "type": 4
@@ -3588,7 +3295,7 @@
               {
                 "fields": [
                   {
-                    "type": 64
+                    "type": 61
                   }
                 ],
                 "index": 1,
@@ -3604,7 +3311,7 @@
           },
           {
             "name": "E",
-            "type": 64
+            "type": 61
           }
         ],
         "path": [
@@ -3613,7 +3320,7 @@
       }
     },
     {
-      "id": 64,
+      "id": 61,
       "type": {
         "def": {
           "variant": {
@@ -3621,7 +3328,7 @@
               {
                 "fields": [
                   {
-                    "type": 65,
+                    "type": 62,
                     "typeName": "String"
                   }
                 ],
@@ -3635,7 +3342,7 @@
               {
                 "fields": [
                   {
-                    "type": 60,
+                    "type": 56,
                     "typeName": "OwnableError"
                   }
                 ],
@@ -3645,7 +3352,7 @@
               {
                 "fields": [
                   {
-                    "type": 15,
+                    "type": 17,
                     "typeName": "AccessControlError"
                   }
                 ],
@@ -3665,7 +3372,7 @@
       }
     },
     {
-      "id": 65,
+      "id": 62,
       "type": {
         "def": {
           "primitive": "str"
@@ -3673,7 +3380,7 @@
       }
     },
     {
-      "id": 66,
+      "id": 63,
       "type": {
         "def": {
           "primitive": "u64"
@@ -3681,7 +3388,7 @@
       }
     },
     {
-      "id": 67,
+      "id": 64,
       "type": {
         "def": {
           "variant": {}

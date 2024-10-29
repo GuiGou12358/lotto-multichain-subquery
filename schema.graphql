@@ -1,35 +1,44 @@
-
-type Raffle @entity {
-    id: ID! # num_raffle
-    startedOn: BigInt # BlockNumber
-    endedOn: BigInt # BlockNumber
-    hasWinner: Boolean
+type RaffleManager @entity {
+    id: ID! # concat registrationContractId and drawNumber
+    currentDrawNumber: BigInt
+    currentStatus: String
 }
 
-type EndRaffle @entity {
-    id: ID! # Extrinsic hash
-    num_raffle: BigInt!
-    chain: String
-    hash: String
+type RaffleRegistration @entity {
+    id: ID! #registrationContractId
+    currentDrawNumber: BigInt
+    currentStatus: String
 }
 
 type Participation @entity {
     id: ID! # Extrinsic hash
-    num_raffle: BigInt!
-    accountId: String! # Account Address
+    registrationContractId: BigInt! @index
+    drawNumber: BigInt! @index
+    accountId: String! @index # Account Address
     numbers: [BigInt]!
-    chain: String
+}
+
+type Raffle @entity {
+    id: ID! # concat registrationContractId and drawNumber
+    registrationContractId: BigInt! @index
+    drawNumber: BigInt! @index
+    openOn: BigInt # BlockNumber
+    openingHash: String # Hash
+    closedOn: BigInt # BlockNumber
+    closingHash: String # Hash
+    resultsReceivedOn: BigInt # BlockNumber
+    resultsReceivedHash: String # Hash
 }
 
 type Result @entity {
     id: ID! # Extrinsic hash
-    num_raffle: BigInt!
+    drawNumber: BigInt! @index
     numbers: [BigInt]!
 }
 
 type Winner @entity {
     id: ID! # concat account + num_raffle
-    num_raffle: BigInt!
+    drawNumber: BigInt! @index
     accountId: String! # Account Address
 }
 

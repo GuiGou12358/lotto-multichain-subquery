@@ -5,3 +5,4 @@ query:
 projects:
   - project-shibuya.yaml
   - project-minato.yaml
+  - project-moonbase.yaml
