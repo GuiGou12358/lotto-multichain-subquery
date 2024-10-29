@@ -6,11 +6,19 @@ type Raffle @entity {
     hasWinner: Boolean
 }
 
+type EndRaffle @entity {
+    id: ID! # Extrinsic hash
+    num_raffle: BigInt!
+    chain: String
+    hash: String
+}
+
 type Participation @entity {
     id: ID! # Extrinsic hash
     num_raffle: BigInt!
     accountId: String! # Account Address
     numbers: [BigInt]!
+    chain: String
 }
 
 type Result @entity {

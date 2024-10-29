@@ -1,9 +1,14 @@
 import {
-    Participation, Raffle, Result, Winner,
+    Participation, Raffle, Result, Winner, EndRaffle
 } from "../types";
 import {WasmEvent} from "@subql/substrate-wasm-processor";
 import {AccountId} from "@polkadot/types/interfaces/runtime";
 import type {UInt} from '@polkadot/types-codec';
+
+import {
+    ParticipantRegisteredLog, RaffleEndedLog
+} from "../types/abi-interfaces/LottoClient";
+import assert from "assert";
 
 
 type RaffleStartedEvent = [UInt] & {
@@ -60,8 +65,45 @@ export async function handleRaffleEnded(event: WasmEvent<RaffleEndedEvent>): Pro
         raffle.endedOn = BigInt(event.blockNumber);
     }
     await raffle.save();
+
 }
 
+export async function handleRaffleEndedShibuya(event: WasmEvent<RaffleEndedEvent>): Promise<void> {
+    // shibuya and Astar are the master
+    await handleRaffleEnded(event);
+    // save the hash when the raffle is ended
+    await handleRaffleEndedSubstrate(event, "Shibuya");
+}
+
+export async function handleRaffleEndedAstar(event: WasmEvent<RaffleEndedEvent>): Promise<void> {
+    // shibuya and Astar are the master
+    await handleRaffleEnded(event);
+    // save the hash when the raffle is ended
+    await handleRaffleEndedSubstrate(event, "Astar");
+}
+
+export async function handleRaffleEndedSubstrate(event: WasmEvent<RaffleEndedEvent>, chain: string): Promise<void> {
+
+    await logger.info(`---------- Raffle Ended on ${chain} at block ${event.blockNumber}`);
+
+    if (!event.args) {
+        await logger.error("No args for RaffleEndedEvent !!!");
+        return;
+    }
+
+    const [num_raffle] = event.args;
+
+    await logger.info("num_raffle : " + num_raffle );
+    await logger.info("chain : " + chain );
+
+    let endRaffle = EndRaffle.create({
+        id: `${event.blockNumber.valueOf()}-${event.blockEventIdx.valueOf()}`,
+        num_raffle: num_raffle.toBigInt(),
+        chain: chain,
+        hash: event.blockHash,
+    });
+    await endRaffle.save();
+}
 
 
 type ParticipationRegisteredEvent = [UInt, AccountId, [UInt]] & {
@@ -70,12 +112,21 @@ type ParticipationRegisteredEvent = [UInt, AccountId, [UInt]] & {
     numbers: [UInt],
 }
 
-export async function handleParticipationRegistered(event: WasmEvent<ParticipationRegisteredEvent>): Promise<void> {
 
-    await logger.info("---------- Participation Registered --------- ");
+export async function handleParticipationRegisteredShibuya(event: WasmEvent<ParticipationRegisteredEvent>): Promise<void> {
+    await handleParticipationSubstrate(event, "Shibuya");
+}
+
+export async function handleParticipationRegisteredAstar(event: WasmEvent<ParticipationRegisteredEvent>): Promise<void> {
+    await handleParticipationSubstrate(event, "Astar");
+}
+
+export async function handleParticipationSubstrate(event: WasmEvent<ParticipationRegisteredEvent>, chain: string): Promise<void> {
+
+    await logger.info(`---------- Participation Registered on ${chain} at block ${event.blockNumber}`);
 
     if (!event.args) {
-        await logger.warn("No Event");
+        await logger.error("No args for handleParticipationRegistered !!!");
         return;
     }
 
@@ -90,11 +141,71 @@ export async function handleParticipationRegistered(event: WasmEvent<Participati
         num_raffle: num_raffle.toBigInt(),
         accountId: participant.toString(),
         numbers: numbers.map(value => value.toBigInt()),
+        chain: chain,
     });
     await participation.save();
 }
 
+export async function handleParticipationRegisteredMinato(log: ParticipantRegisteredLog): Promise<void> {
+    return handleParticipationRegisteredEvm(log, "Minato");
+}
 
+export async function handleParticipationRegisteredSoneium(log: ParticipantRegisteredLog): Promise<void> {
+    return handleParticipationRegisteredEvm(log, "Soneium");
+}
+
+export async function handleParticipationRegisteredEvm(log: ParticipantRegisteredLog, chain: string): Promise<void> {
+
+    await logger.info(`---------- Participation Registered on ${chain} at block ${log.blockNumber}`);
+
+    if (!log.args) {
+        await logger.error("No args for handleParticipationRegistered !!!");
+        return;
+    }
+    await logger.info(`RaffleId: ${log.args._raffleId}`);
+    await logger.info(`AccountId: ${log.args._participant}`);
+    await logger.info(`Numbers: ${log.args._numbers}`);
+
+    let participation = Participation.create({
+        id: `${log.blockNumber.valueOf()}-${log.logIndex.valueOf()}`,
+        num_raffle: log.args._raffleId.toBigInt(),
+        accountId: log.args._participant.toString(),
+        numbers: log.args._numbers.map(value => value.toBigInt()),
+        chain: chain,
+    });
+    await participation.save();
+
+}
+
+
+export async function handleRaffleEndedMinato(log: RaffleEndedLog): Promise<void> {
+    return handleRaffleEndedEvm(log, "Minato");
+}
+
+export async function handleRaffleEndedSoneium(log: RaffleEndedLog): Promise<void> {
+    return handleRaffleEndedEvm(log, "Soneium");
+}
+
+export async function handleRaffleEndedEvm(log: RaffleEndedLog, chain: string): Promise<void> {
+
+    await logger.info(`---------- Raffle Ended on ${chain} at block ${log.blockNumber}`);
+
+    if (!log.args) {
+        await logger.error("No args for RaffleEndedEvent !!!");
+        return;
+    }
+
+    await logger.info("num_raffle : " + log.args._raffleId );
+    await logger.info("chain : " + chain );
+
+    let endRaffle = EndRaffle.create({
+        id: `${log.blockNumber.valueOf()}-${log.logIndex.valueOf()}`,
+        num_raffle: log.args._raffleId.toBigInt(),
+        chain: chain,
+        hash: log.blockHash,
+    });
+    await endRaffle.save();
+}
 
 
 type ResultReceivedEvent = [UInt, [UInt]] & {

@@ -5,8 +5,8 @@ import {WasmDatasource} from "@subql/substrate-wasm-processor";
 // Can expand the Datasource processor types via the generic param
 const projectShibuya: SubstrateProject<WasmDatasource> = {
     specVersion: "1.0.0",
-    version: "2.0.0",
-    name: "lotto-subql",
+    version: "3.0.0",
+    name: "lotto-subql-shibuya",
     description:
         "This SubQuery project indexes data used by the Lotto dApp on Shibuya network",
     runner: {
@@ -42,7 +42,7 @@ const projectShibuya: SubstrateProject<WasmDatasource> = {
     dataSources: [
         {
             kind: "substrate/Wasm",
-            startBlock: 5979041,
+            startBlock: 7170350,
             //endBlock: 1,
             processor: {
                 file: "./node_modules/@subql/substrate-wasm-processor/dist/bundle.js",
@@ -63,14 +63,14 @@ const projectShibuya: SubstrateProject<WasmDatasource> = {
                         }
                     },
                     {
-                        handler: "handleRaffleEnded",
+                        handler: "handleRaffleEndedShibuya",
                         kind: "substrate/WasmEvent",
                         filter: {
                             identifier: "RaffleEnded"
                         }
                     },
                     {
-                        handler: "handleParticipationRegistered",
+                        handler: "handleParticipationRegisteredShibuya",
                         kind: "substrate/WasmEvent",
                         filter: {
                             identifier: "ParticipationRegistered"
@@ -93,9 +93,10 @@ const projectShibuya: SubstrateProject<WasmDatasource> = {
                 ]
             }
         },
+        /*
         {
             kind: "substrate/Wasm",
-            startBlock: 5979041,
+            startBlock: 7170350,
             //endBlock: 1,
             processor: {
                 file: "./node_modules/@subql/substrate-wasm-processor/dist/bundle.js",
@@ -123,7 +124,7 @@ const projectShibuya: SubstrateProject<WasmDatasource> = {
                         }
                     },
                     {
-                        handler: "handleParticipationRegistered",
+                        handler: "handleParticipationRegisteredShibuya",
                         kind: "substrate/WasmEvent",
                         filter: {
                             identifier: "ParticipationRegistered"
@@ -146,6 +147,7 @@ const projectShibuya: SubstrateProject<WasmDatasource> = {
                 ]
             }
         }
+         */
     ],
 };
 
