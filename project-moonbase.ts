@@ -27,7 +27,7 @@ const projectMoonbase: EthereumProject = {
     dataSources: [
         {
             kind: EthereumDatasourceKind.Runtime,
-            startBlock: 9239800,
+            startBlock: 9239600,
 
             options: {
                 abi: "RaffleRegistration",
