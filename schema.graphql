@@ -8,6 +8,7 @@ type RaffleRegistration @entity {
     id: ID! #registrationContractId
     currentDrawNumber: BigInt
     currentStatus: String
+    chain: String
 }
 
 type Participation @entity {
@@ -16,6 +17,7 @@ type Participation @entity {
     drawNumber: BigInt! @index
     accountId: String! @index # Account Address
     numbers: [BigInt]!
+    chain: String
 }
 
 type Raffle @entity {

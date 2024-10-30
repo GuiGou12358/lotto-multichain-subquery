@@ -96,7 +96,8 @@ export async function handleParticipationRegistered(
         registrationContractId:  registrationContractId,
         drawNumber: drawNumber,
         accountId: accountId,
-        numbers: numbers
+        numbers: numbers,
+        chain: getChain(registrationContractId),
     });
     return participation.save();
 }
@@ -119,6 +120,7 @@ async function saveRaffleRegistration(
             id: registrationContractId.toString(),
             currentDrawNumber: drawNumber,
             currentStatus: status,
+            chain: getChain(registrationContractId),
         });
     }
     return raffleRegistration.save();
@@ -140,4 +142,20 @@ async function getOrCreateRaffle(
         });
     }
     return raffle;
+}
+
+function getChain(
+  registrationContractId: bigint,
+): string | undefined {
+
+    if (BigInt(registrationContractId) == BigInt(10)){
+        return "Astar (testnet)";
+    }
+    if (BigInt(registrationContractId) == BigInt(11)){
+        return "Soneium (testnet)";
+    }
+    if (BigInt(registrationContractId) == BigInt(12)){
+        return "Moonbeam (testnet)";
+    }
+    return undefined;
 }
