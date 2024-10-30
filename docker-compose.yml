@@ -20,7 +20,7 @@ services:
     ports:
       - 3001:3001
     depends_on:
-      "postgres":
+      postgres:
         condition: service_healthy
     restart: unless-stopped
     environment:
@@ -49,7 +49,7 @@ services:
     ports:
       - 3002:3002
     depends_on:
-      "postgres":
+      postgres:
         condition: service_healthy
     restart: unless-stopped
     environment:
@@ -73,6 +73,33 @@ services:
       timeout: 5s
       retries: 10
 
+  subquery-node-moonbase:
+    image: onfinality/subql-node-ethereum:latest
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+    environment:
+      DB_USER: postgres
+      DB_PASS: postgres
+      DB_DATABASE: postgres
+      DB_HOST: postgres
+      DB_PORT: 5432
+    volumes:
+      - ./:/app
+    command:
+      - -f=app/project-moonbase.yaml
+      - --multi-chain
+      - --db-schema=lotto-multi-chain
+      - --disable-historical
+      - --skipTransactions
+      - --port=3003
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:3003/ready" ]
+      interval: 3s
+      timeout: 5s
+      retries: 10
+
   graphql-engine:
     image: subquerynetwork/subql-query:latest
     ports:
@@ -84,7 +111,9 @@ services:
         condition: service_healthy
       "subquery-node-minato":
         condition: service_healthy
-    restart: always
+      "subquery-node-moonbase":
+        condition: service_healthy
+    restart: unless-stopped
     environment:
       DB_USER: postgres
       DB_PASS: postgres
