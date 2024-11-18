@@ -43,10 +43,10 @@ const projectMinato: EthereumProject = {
     dataSources: [
         {
             kind: EthereumDatasourceKind.Runtime,
-            startBlock: 3521200,
+            startBlock: 4364780,
             options: {
                 abi: "RaffleRegistration",
-                address: "0x474F65998C79CD63843A33c46cd6B6B00dE455AB",
+                address: "0xA8AE9c3F7bc784Ccd1E6013c59A233600C6dE90A",
             },
             assets: new Map([["RaffleRegistration", { file: "./abi/RaffleRegistration.json" }]]),
             mapping: {

@@ -41,13 +41,13 @@ const projectShibuya: SubstrateProject<WasmDatasource> = {
     dataSources: [
         {
             kind: "substrate/Wasm",
-            startBlock: 7717400,
+            startBlock: 7967400,
             //endBlock: 1,
             processor: {
                 file: "./node_modules/@subql/substrate-wasm-processor/dist/bundle.js",
                 options: {
                     abi: "lotto-registration",
-                    contract: "ZvzNqBdnQmg2nmDnPNF9dirosinGsX53hG1Exc5xqHzJHVX",
+                    contract: "ZkMmwcAsCuFPB13kfXH6aQiJYAfnQYC2qMiK5h1mGKsMX86",
                 },
             },
             assets: new Map([["lotto-registration", {file: "./metadata/lotto_registration_contract.json"}]]),
@@ -101,13 +101,13 @@ const projectShibuya: SubstrateProject<WasmDatasource> = {
         },
         {
             kind: "substrate/Wasm",
-            startBlock: 7717400,
+            startBlock: 7967400,
             //endBlock: 1,
             processor: {
                 file: "./node_modules/@subql/substrate-wasm-processor/dist/bundle.js",
                 options: {
                     abi: "lotto-registration-manager",
-                    contract: "Wb418H1VdYF2fnfQgfhShiu8fK1nbEr9hVE2yHMo6r7p7aF",
+                    contract: "YuCwFXie1QX7pPyvL8dHYGCX6gpCPB4aWchzb2bSYSgdrvu",
                 },
             },
             assets: new Map([["lotto-registration-manager", {file: "./metadata/lotto_registration_manager_contract.json"}]]),

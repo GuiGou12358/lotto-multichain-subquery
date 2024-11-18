@@ -27,11 +27,11 @@ const projectMoonbase: EthereumProject = {
     dataSources: [
         {
             kind: EthereumDatasourceKind.Runtime,
-            startBlock: 9239600,
+            startBlock: 9514270,
 
             options: {
                 abi: "RaffleRegistration",
-                address: "0x29621E6F2b7DBf256Ff0028dc04986C5E14Db50c",
+                address: "0x991926D5ca21EF2938B5BAffbf4EC24fB55e205e",
             },
             assets: new Map([["RaffleRegistration", { file: "./abi/RaffleRegistration.json" }]]),
             mapping: {
