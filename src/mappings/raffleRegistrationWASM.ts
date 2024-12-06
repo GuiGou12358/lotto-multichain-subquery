@@ -156,12 +156,14 @@ export async function handleParticipationRegisteredWASM(event: WasmEvent<Partici
     }
     const id = `${event.blockNumber.valueOf()}-${event.blockEventIdx.valueOf()}`;
     const [registrationContractId, drawNumber, participant, numbers] = event.args;
+    const timestamp = event.timestamp;
 
     return handleParticipationRegistered(
       id,
       registrationContractId.toBigInt(),
       drawNumber.toBigInt(),
       participant.toString(),
-      numbers.map(value => value.toBigInt())
+      numbers.map(value => value.toBigInt()),
+      timestamp
     );
 }

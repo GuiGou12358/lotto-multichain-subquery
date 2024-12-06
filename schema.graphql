@@ -18,6 +18,7 @@ type Participation @entity {
     accountId: String! @index # Account Address
     numbers: [BigInt]!
     chain: String
+    timestamp: Date!
 }
 
 type Raffle @entity {

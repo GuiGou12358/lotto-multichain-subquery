@@ -85,7 +85,8 @@ export async function handleParticipationRegistered(
   registrationContractId: bigint,
   drawNumber: bigint,
   accountId: string,
-  numbers: bigint[]
+  numbers: bigint[],
+  timestamp: Date
 ): Promise<void> {
 
     await logger.info(`Participant ${accountId} picked the numbers ${numbers} for raffle ${drawNumber} via the registration contract ${registrationContractId}`);
@@ -98,6 +99,7 @@ export async function handleParticipationRegistered(
         accountId: accountId,
         numbers: numbers,
         chain: getChain(registrationContractId),
+        timestamp: timestamp,
     });
     return participation.save();
 }

@@ -119,6 +119,7 @@ export async function handleParticipationRegisteredEVM(log: ParticipationRegiste
     const drawNumber = log.args.drawNumber.toBigInt();
     const accountId = log.args.participant.toString();
     const numbers = log.args.numbers.map(value => value.toBigInt());
+    const timestamp = new Date(Number(log.block.timestamp.valueOf())  * 1000);
 
-    return handleParticipationRegistered(id, registrationContractId, drawNumber, accountId, numbers);
+    return handleParticipationRegistered(id, registrationContractId, drawNumber, accountId, numbers, timestamp);
 }
