@@ -18,7 +18,7 @@ services:
   subquery-node-shibuya:
     image: subquerynetwork/subql-node-substrate:latest
     ports:
-      - 3001:3001
+      - 3101:3101
     depends_on:
       postgres:
         condition: service_healthy
@@ -37,9 +37,9 @@ services:
       - --db-schema=lotto-multi-chain
       - --disable-historical
       - --skipTransactions
-      - --port=3001
+      - --port=3101
     healthcheck:
-      test: [ "CMD", "curl", "-f", "http://localhost:3001/ready" ]
+      test: [ "CMD", "curl", "-f", "http://localhost:3101/ready" ]
       interval: 3s
       timeout: 5s
       retries: 10
@@ -47,7 +47,7 @@ services:
   subquery-node-minato:
     image: subquerynetwork/subql-node-ethereum:latest
     ports:
-      - 3002:3002
+      - 3102:3102
     depends_on:
       postgres:
         condition: service_healthy
@@ -66,15 +66,17 @@ services:
       - --db-schema=lotto-multi-chain
       - --disable-historical
       - --skipTransactions
-      - --port=3002
+      - --port=3102
     healthcheck:
-      test: [ "CMD", "curl", "-f", "http://localhost:3002/ready" ]
+      test: [ "CMD", "curl", "-f", "http://localhost:3102/ready" ]
       interval: 3s
       timeout: 5s
       retries: 10
 
   subquery-node-moonbase:
     image: onfinality/subql-node-ethereum:latest
+    ports:
+      - 3103:3103
     depends_on:
       postgres:
         condition: service_healthy
@@ -93,9 +95,9 @@ services:
       - --db-schema=lotto-multi-chain
       - --disable-historical
       - --skipTransactions
-      - --port=3003
+      - --port=3103
     healthcheck:
-      test: [ "CMD", "curl", "-f", "http://localhost:3003/ready" ]
+      test: [ "CMD", "curl", "-f", "http://localhost:3103/ready" ]
       interval: 3s
       timeout: 5s
       retries: 10
