@@ -2,18 +2,23 @@ import {
     ConfigUpdatedLog,
     ParticipationRegisteredLog,
     RegistrationsOpenLog,
-    ResultsReceivedLog,
+    ResultsReceivedLog, SaltGeneratedLog,
     StartedLog
 } from "../types/abi-interfaces/RaffleRegistration";
+
+import {
+    ResultsReceivedLog as ResultsReceivedOldLog,
+} from "../types/abi-interfaces/RaffleRegistrationOld";
 
 import {
     handleConfigUpdated,
     handleParticipationRegistered,
     handleRegistrationsClosed,
     handleRegistrationsOpen,
-    handleResultsReceived,
+    handleResultsReceived, handleSaltGenerated,
     handleStarted
 } from "./raffleRegistration";
+import {WasmEvent} from "@subql/substrate-wasm-processor";
 
 
 // Handle the event ConfigUpdated(uint8 nbNumbers, uint minNumber, uint maxNumber)
@@ -69,7 +74,6 @@ export async function handleRegistrationsClosedEVM(log: RegistrationsOpenLog): P
 
     await logger.info(" ---------------------------- handleRegistrationsClosedEVM --- ");
 
-
     if (!log.args) {
         await logger.error("No args for handleRegistrationsClosedEVM !");
         return;
@@ -82,9 +86,44 @@ export async function handleRegistrationsClosedEVM(log: RegistrationsOpenLog): P
 
     return handleRegistrationsClosed(registrationContractId, drawNumber, closedOn, closingHash);
 }
+// Handle the event SaltGeneratedLog(uint indexed registrationContractId, uint indexed drawNumber)
+export async function handleSaltGeneratedEVM(log: SaltGeneratedLog): Promise<void> {
 
+    await logger.info(" ---------------------------- handleSaltGeneratedEVM --- ");
 
-// Handle the event ResultsReceived(uint indexed registrationContractId, uint indexed drawNumber, uint[] numbers, address[] winners)
+    if (!log.args) {
+        await logger.error("No args for handleSaltGeneratedEVM !");
+        return;
+    }
+
+    const registrationContractId = log.args.registrationContractId.toBigInt();
+    const drawNumber = log.args.drawNumber.toBigInt();
+    const generatedOn = BigInt(log.blockNumber.valueOf());
+    const hash = log.blockHash;
+
+    return handleSaltGenerated(registrationContractId, drawNumber, hash, generatedOn, hash);
+}
+
+// Handle the event ResultsReceived(uint indexed registrationContractId, uint indexed draw_number, uint[] numbers, bool hasWinner)
+export async function handleResultsReceivedOldEVM(log: ResultsReceivedOldLog): Promise<void> {
+
+    await logger.info(" ---------------------------- handleResultsReceivedOldEVM --- ");
+
+    if (!log.args) {
+        await logger.error("No args for handleResultsReceivedOldEVM !");
+        return;
+    }
+
+    const registrationContractId = log.args.registrationContractId.toBigInt();
+    const drawNumber = log.args.drawNumber.toBigInt();
+    const resultsReceivedOn = BigInt(log.blockNumber.valueOf());
+    const resultsReceivedHash = log.blockHash;
+
+    return handleResultsReceived(registrationContractId, drawNumber, resultsReceivedOn, resultsReceivedHash);
+
+}
+
+// Handle the event ResultsReceived(uint indexed registrationContractId, uint indexed draw_number, uint[] numbers, bool hasWinner)
 export async function handleResultsReceivedEVM(log: ResultsReceivedLog): Promise<void> {
 
     await logger.info(" ---------------------------- handleResultsReceivedEVM --- ");
@@ -102,7 +141,6 @@ export async function handleResultsReceivedEVM(log: ResultsReceivedLog): Promise
     return handleResultsReceived(registrationContractId, drawNumber, resultsReceivedOn, resultsReceivedHash);
 
 }
-
 
 // Handle the event ParticipationRegistered(uint indexed registrationContractId, uint indexed drawNumber, address indexed participant, uint[] numbers)
 export async function handleParticipationRegisteredEVM(log: ParticipationRegisteredLog): Promise<void> {

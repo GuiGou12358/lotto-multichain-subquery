@@ -7,7 +7,7 @@ import {
     handleParticipationRegistered,
     handleRegistrationsClosed,
     handleRegistrationsOpen,
-    handleResultsReceived,
+    handleResultsReceived, handleSaltGenerated,
     handleStarted
 } from "./raffleRegistration";
 
@@ -110,12 +110,64 @@ export async function handleRegistrationsClosedWASM(event: WasmEvent<Registratio
     );
 }
 
+type SaltGeneratedEvent = [UInt, UInt] & {
+    registration_contract_id: UInt,
+    draw_number: UInt,
+}
 
-type ResultsReceived = [UInt, UInt, [UInt], [string]] & {
+export async function handleSaltGeneratedWASM(event: WasmEvent<SaltGeneratedEvent>): Promise<void> {
+
+    await logger.info(" ---------------------------- handleSaltGeneratedWASM --- ");
+
+    if (!event.args) {
+        await logger.error("No args for handleSaltGeneratedWASM !");
+        return;
+    }
+    const [registrationContractId, drawNumber] = event.args;
+    const generatedOn = BigInt(event.blockNumber.valueOf());
+    const hash = event.blockHash;
+
+    return handleSaltGenerated(
+      registrationContractId.toBigInt(),
+      drawNumber.toBigInt(),
+      hash,
+      generatedOn,
+      hash
+    );
+}
+
+type ResultsReceivedOld = [UInt, UInt, [UInt], [string]] & {
     registration_contract_id: UInt,
     draw_number: UInt,
     numbers: [UInt],
     winners: [string],
+}
+
+export async function handleResultsReceivedOldWASM(event: WasmEvent<ResultsReceivedOld>): Promise<void> {
+
+    await logger.info(" ---------------------------- handleResultsReceivedOldWASM --- ");
+
+    if (!event.args) {
+        await logger.error("No args for handleResultsReceivedOldWASM !");
+        return;
+    }
+    const [registrationContractId, drawNumber, numbers, winners] = event.args;
+    const resultsReceivedOn = BigInt(event.blockNumber.valueOf());
+    const resultsReceivedHash = event.blockHash;
+
+    return handleResultsReceived(
+      registrationContractId.toBigInt(),
+      drawNumber.toBigInt(),
+      resultsReceivedOn,
+      resultsReceivedHash
+    );
+}
+
+type ResultsReceived = [UInt, UInt, [UInt], boolean] & {
+    registration_contract_id: UInt,
+    draw_number: UInt,
+    numbers: [UInt],
+    has_winner: boolean,
 }
 
 export async function handleResultsReceivedWASM(event: WasmEvent<ResultsReceived>): Promise<void> {
@@ -126,7 +178,7 @@ export async function handleResultsReceivedWASM(event: WasmEvent<ResultsReceived
         await logger.error("No args for handleResultsReceivedWASM !");
         return;
     }
-    const [registrationContractId, drawNumber, numbers, winners] = event.args;
+    const [registrationContractId, drawNumber, numbers, hasWinner] = event.args;
     const resultsReceivedOn = BigInt(event.blockNumber.valueOf());
     const resultsReceivedHash = event.blockHash;
 

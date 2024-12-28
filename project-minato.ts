@@ -43,10 +43,10 @@ const projectMinato: EthereumProject = {
     dataSources: [
         {
             kind: EthereumDatasourceKind.Runtime,
-            startBlock: 4364780,
+            startBlock: 6092000,
             options: {
                 abi: "RaffleRegistration",
-                address: "0xA8AE9c3F7bc784Ccd1E6013c59A233600C6dE90A",
+                address: "0xBFaFd55C6Cc933174308B461C0b1DD5379cc7152",
             },
             assets: new Map([["RaffleRegistration", { file: "./abi/RaffleRegistration.json" }]]),
             mapping: {
@@ -89,7 +89,84 @@ const projectMinato: EthereumProject = {
                         }
                     },
                     {
+                        handler: "handleSaltGeneratedEVM",
+                        kind: EthereumHandlerKind.Event,
+                        filter: {
+                            topics: [
+                                "SaltGenerated(uint indexed registrationContractId, uint indexed draw_number)",
+                            ],
+                        }
+                    },
+                    {
                         handler: "handleResultsReceivedEVM",
+                        kind: EthereumHandlerKind.Event,
+                        filter: {
+                            topics: [
+                                "ResultsReceived(uint indexed registrationContractId, uint indexed draw_number, uint[] numbers, bool hasWinner)",
+                            ],
+                        }
+                    },
+                    {
+                        handler: "handleParticipationRegisteredEVM",
+                        kind: EthereumHandlerKind.Event,
+                        filter: {
+                            topics: [
+                                "ParticipationRegistered(uint indexed registrationContractId, uint indexed draw_number, address indexed participant, uint[] numbers)",
+                            ],
+                        }
+                    },
+                ],
+            },
+        },
+        {
+            kind: EthereumDatasourceKind.Runtime,
+            startBlock: 4364780,
+            options: {
+                abi: "RaffleRegistration",
+                address: "0xA8AE9c3F7bc784Ccd1E6013c59A233600C6dE90A",
+            },
+            assets: new Map([["RaffleRegistration", { file: "./abi/RaffleRegistrationOld.json" }]]),
+            mapping: {
+                file: "./dist/index.js",
+                handlers: [
+                    {
+                        handler: "handleConfigUpdatedEVM",
+                        kind: EthereumHandlerKind.Event,
+                        filter: {
+                            topics: [
+                                "ConfigUpdated(uint8 nbNumbers, uint minNumber, uint maxNumber)",
+                            ],
+                        },
+                    },
+                    {
+                        handler: "handleStartedEVM",
+                        kind: EthereumHandlerKind.Event,
+                        filter: {
+                            topics: [
+                                "Started(uint indexed registrationContractId)",
+                            ],
+                        }
+                    },
+                    {
+                        handler: "handleRegistrationsOpenEVM",
+                        kind: EthereumHandlerKind.Event,
+                        filter: {
+                            topics: [
+                                "RegistrationsOpen(uint indexed registrationContractId, uint indexed draw_number)",
+                            ],
+                        }
+                    },
+                    {
+                        handler: "handleRegistrationsClosedEVM",
+                        kind: EthereumHandlerKind.Event,
+                        filter: {
+                            topics: [
+                                "RegistrationsClosed(uint indexed registrationContractId, uint indexed draw_number)",
+                            ],
+                        }
+                    },
+                    {
+                        handler: "handleResultsReceivedOldEVM",
                         kind: EthereumHandlerKind.Event,
                         filter: {
                             topics: [

@@ -61,6 +61,29 @@ export async function handleRegistrationsClosed(
     return raffle.save();
 }
 
+
+export async function handleSaltGenerated(
+  registrationContractId: bigint,
+  drawNumber: bigint,
+  salt: string,
+  generatedOn: bigint,
+  generationHash: string,
+): Promise<void> {
+
+    await logger.info(`Raffle ${drawNumber} has generated the salt for the registration contract ${registrationContractId}`);
+
+    // save the raffle registration
+    await saveRaffleRegistration(registrationContractId, drawNumber, "SaltGenerated");
+
+    // save the raffle
+    let raffle = await getOrCreateRaffle(registrationContractId, drawNumber);
+    raffle.salt = salt;
+    raffle.saltGeneratedOn = generatedOn;
+    raffle.saltGeneratedHash = generationHash;
+    return raffle.save();
+}
+
+
 export async function handleResultsReceived(
   registrationContractId: bigint,
   drawNumber: bigint,

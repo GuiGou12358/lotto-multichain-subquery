@@ -29,6 +29,9 @@ type Raffle @entity {
     openingHash: String # Hash
     closedOn: BigInt # BlockNumber
     closingHash: String # Hash
+    salt: String
+    saltGeneratedOn: BigInt # BlockNumber
+    saltGeneratedHash: String # Hash
     resultsReceivedOn: BigInt # BlockNumber
     resultsReceivedHash: String # Hash
 }
