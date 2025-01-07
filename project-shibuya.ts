@@ -41,13 +41,13 @@ const projectShibuya: SubstrateProject<WasmDatasource> = {
     dataSources: [
         {
             kind: "substrate/Wasm",
-            startBlock: 8429800,
+            startBlock: 8613190,
             //endBlock: 1,
             processor: {
                 file: "./node_modules/@subql/substrate-wasm-processor/dist/bundle.js",
                 options: {
                     abi: "lotto-registration",
-                    contract: "bKFW6HcX4GE6LkAq3464EaSoQdnSy9HiMXgKhAVu3bSK1oe",
+                    contract: "bSm4f7WjbxFMbo4fRUGw7oHvva65P8m8jCqedFsXAwUJx7V",
                 },
             },
             assets: new Map([["lotto-registration", {file: "./metadata/lotto_registration_contract.json"}]]),
@@ -122,41 +122,6 @@ const projectShibuya: SubstrateProject<WasmDatasource> = {
                 file: "./dist/index.js",
                 handlers: [
                     {
-                        handler: "handleConfigUpdatedWASM",
-                        kind: "substrate/WasmEvent",
-                        filter: {
-                            identifier: "ConfigUpdated"
-                        }
-                    },
-                    {
-                        handler: "handleStartedWASM",
-                        kind: "substrate/WasmEvent",
-                        filter: {
-                            identifier: "Started"
-                        }
-                    },
-                    {
-                        handler: "handleRegistrationsOpenWASM",
-                        kind: "substrate/WasmEvent",
-                        filter: {
-                            identifier: "RegistrationsOpen"
-                        }
-                    },
-                    {
-                        handler: "handleRegistrationsClosedWASM",
-                        kind: "substrate/WasmEvent",
-                        filter: {
-                            identifier: "RegistrationsClosed"
-                        }
-                    },
-                    {
-                        handler: "handleResultsReceivedOldWASM",
-                        kind: "substrate/WasmEvent",
-                        filter: {
-                            identifier: "ResultsReceived"
-                        }
-                    },
-                    {
                         handler: "handleParticipationRegisteredWASM",
                         kind: "substrate/WasmEvent",
                         filter: {
@@ -168,13 +133,13 @@ const projectShibuya: SubstrateProject<WasmDatasource> = {
         },
         {
             kind: "substrate/Wasm",
-            startBlock: 7967400,
+            startBlock: 8613190,
             //endBlock: 1,
             processor: {
                 file: "./node_modules/@subql/substrate-wasm-processor/dist/bundle.js",
                 options: {
                     abi: "lotto-registration-manager",
-                    contract: "baB95cq8LN1Bzafv29M88b3hj57WiNuQ7aZz9FJDzdMhPE2",
+                    contract: "acKRTkuTsGESFmsy3wcvWTyfRW6xL4QY1gMhjNVtD5yUB7d",
                 },
             },
             assets: new Map([["lotto-registration-manager", {file: "./metadata/lotto_registration_manager_contract.json"}]]),

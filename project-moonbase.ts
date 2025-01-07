@@ -27,11 +27,11 @@ const projectMoonbase: EthereumProject = {
     dataSources: [
         {
             kind: EthereumDatasourceKind.Runtime,
-            startBlock: 10088284,
+            startBlock: 10236780,
 
             options: {
                 abi: "RaffleRegistration",
-                address: "0xA50d6F87E90A28c5b594d262469c1B93c0C2f874",
+                address: "0x987461a5eF325f9f217D2b777CeDCf3b9c4D62d5",
             },
             assets: new Map([["RaffleRegistration", { file: "./abi/RaffleRegistration.json" }]]),
             mapping: {
@@ -115,51 +115,6 @@ const projectMoonbase: EthereumProject = {
             mapping: {
                 file: "./dist/index.js",
                 handlers: [
-                    {
-                        handler: "handleConfigUpdatedEVM",
-                        kind: EthereumHandlerKind.Event,
-                        filter: {
-                            topics: [
-                                "ConfigUpdated(uint8 nbNumbers, uint minNumber, uint maxNumber)",
-                            ],
-                        },
-                    },
-                    {
-                        handler: "handleStartedEVM",
-                        kind: EthereumHandlerKind.Event,
-                        filter: {
-                            topics: [
-                                "Started(uint indexed registrationContractId)",
-                            ],
-                        }
-                    },
-                    {
-                        handler: "handleRegistrationsOpenEVM",
-                        kind: EthereumHandlerKind.Event,
-                        filter: {
-                            topics: [
-                                "RegistrationsOpen(uint indexed registrationContractId, uint indexed draw_number)",
-                            ],
-                        }
-                    },
-                    {
-                        handler: "handleRegistrationsClosedEVM",
-                        kind: EthereumHandlerKind.Event,
-                        filter: {
-                            topics: [
-                                "RegistrationsClosed(uint indexed registrationContractId, uint indexed draw_number)",
-                            ],
-                        }
-                    },
-                    {
-                        handler: "handleResultsReceivedOldEVM",
-                        kind: EthereumHandlerKind.Event,
-                        filter: {
-                            topics: [
-                                "ResultsReceived(uint indexed registrationContractId, uint indexed draw_number, uint[] numbers, address[] winners)",
-                            ],
-                        }
-                    },
                     {
                         handler: "handleParticipationRegisteredEVM",
                         kind: EthereumHandlerKind.Event,
