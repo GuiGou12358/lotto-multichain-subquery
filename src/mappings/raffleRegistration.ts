@@ -182,5 +182,11 @@ function getChain(
     if (BigInt(registrationContractId) == BigInt(12)){
         return "Moonbeam (testnet)";
     }
+    if (BigInt(registrationContractId) == BigInt(20)){
+        return "Astar";
+    }
+    if (BigInt(registrationContractId) == BigInt(21)){
+        return "Soneium";
+    }
     return undefined;
 }

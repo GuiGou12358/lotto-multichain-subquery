@@ -36,7 +36,7 @@ const projectAstar: SubstrateProject<WasmDatasource> = {
                 file: "./node_modules/@subql/substrate-wasm-processor/dist/bundle.js",
                 options: {
                     abi: "lotto-registration",
-                    contract: "YYRwKYXyfyyf4cVBPCQCtccqtxpM6eyFzYh5sLuiWBWKQNA",
+                    contract: "ZsaaL58Adg7k1xT1EumK575H6GymJ214kvRk8NxKouTWqnC",
                 },
             },
             assets: new Map([["lotto-registration", {file: "./metadata/lotto_registration_contract.json"}]]),
@@ -103,7 +103,7 @@ const projectAstar: SubstrateProject<WasmDatasource> = {
                 file: "./node_modules/@subql/substrate-wasm-processor/dist/bundle.js",
                 options: {
                     abi: "lotto-registration-manager",
-                    contract: "XMrm9AqcEtj8GssWV1Zb4MKituXbJkoS8zX3kVdTkj4h1VX",
+                    contract: "Y4j9j5EsehgPAjL6HHMMjHU9EhCdwrADazXEQdhFciG4uR9",
                 },
             },
             assets: new Map([["lotto-registration-manager", {file: "./metadata/lotto_registration_manager_contract.json"}]]),

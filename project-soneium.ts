@@ -34,7 +34,7 @@ const projectSoneium: EthereumProject = {
             startBlock: 2511760,
             options: {
                 abi: "RaffleRegistration",
-                address: "0xec69C42c2CA23452A6C9aB73b5e534f21b1a2732",
+                address: "0xB2196C9B95BD3cdC799eb89f856895aEDbd649bB",
             },
             assets: new Map([["RaffleRegistration", { file: "./abi/RaffleRegistration.json" }]]),
             mapping: {
